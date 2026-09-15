@@ -4955,7 +4955,7 @@ const _isMobile = ('ontouchstart' in window || navigator.maxTouchPoints > 0) &&
   (window.innerWidth < 1200 || /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent) || (window.matchMedia && window.matchMedia('(pointer: coarse)').matches));
 const _lowPowerDevice = (navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 4) ||
   (navigator.deviceMemory && navigator.deviceMemory <= 4) || /Android\s+[1-7]|iPhone|iPad/i.test(navigator.userAgent);
-let ZOOM = _isMobile ? 0.50 : 0.62;
+let ZOOM = _isMobile ? 1.00 : 1.00;
 let camX = 0, camY = 0, _camReady = false;
 
 const WORLD = 7200;
