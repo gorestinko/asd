@@ -647,24 +647,6 @@
                 align-items: center;
             }
 
-            header {
-                left: 50% !important;
-                right: auto !important;
-                top: 6px !important;
-                width: min(100% - 12px, 1440px) !important;
-                transform: translateX(-50%) !important;
-                margin: 0 !important;
-            }
-
-            main {
-                margin-top: 0 !important;
-                max-width: min(100%, 440px) !important;
-                width: min(100%, 440px) !important;
-                padding-top: 120px !important;
-                padding-left: 0.5rem !important;
-                padding-right: 0.5rem !important;
-            }
-
             #modalOverlay {
                 padding: 4px !important;
                 overflow: hidden !important;
@@ -682,27 +664,14 @@
                 max-width: min(96vw, 440px) !important;
             }
 
-            /* Keep the landing UI inside the viewport; only modal bodies scroll. */
             html, body { width:100%; max-width:100%; overflow-x:hidden; }
             body { height:var(--app-height); min-height:var(--app-height); overflow:hidden; padding:0; }
             header { overflow:visible; }
-            header > div:first-child { min-width:0; max-width:100%; flex-wrap: wrap; }
-            header > div:last-child { min-width:0; max-width:100%; flex-wrap: wrap; }
-            header > div:first-child > div,
-            header > div:last-child > div,
             #header-user-view,
             #header-guest-view {
                 min-width:0;
                 max-width:100%;
-            }
-            #header-user-view,
-            #header-guest-view {
                 flex-wrap: nowrap;
-            }
-            #header-user-view > *,
-            #header-guest-view > * {
-                min-width:0;
-                max-width:100%;
             }
             #header-profile-hud {
                 flex: 1 1 160px;
@@ -712,17 +681,6 @@
                 overflow:hidden;
             }
             header button, header [role="button"] { max-width:100%; min-width:0; }
-            main {
-                flex:1 1 auto;
-                height:100dvh;
-                min-height:0;
-                flex-shrink:1;
-                overflow-x:hidden;
-                overflow-y:auto;
-                overscroll-behavior:contain;
-                padding-bottom:24px !important;
-                scrollbar-gutter:stable;
-            }
             .modal-content {
                 position:relative;
                 box-sizing:border-box;
@@ -777,134 +735,7 @@
             #cosmeticsModal .panel-inset,
             #shopModal .panel-inset { max-width:100%; }
         }
-
-        /* ══════════════════════════════════════════════════════════════
-           YATAY MOBİL & KOMPAKT EKRANLAR (LANDSCAPE / SHORT SCREENS)
-           Menü, Shop, Cosmetics, Challenges ve Daily Reward boyutlandırması
-           ══════════════════════════════════════════════════════════════ */
-        @media (max-height: 560px), (orientation: landscape) and (max-height: 640px) {
-            body {
-                overflow: hidden !important;
-                padding: 0 !important;
-                height: var(--app-height) !important;
-            }
-
-            /* Header: Kompakt üst bar */
-            header {
-                top: 4px !important;
-                padding: 0 6px !important;
-                z-index: 40 !important;
-            }
-
-            /* Sol Header Bölümü: Tek satır, taşma ve sarmayı önleme */
-            header > div:first-child {
-                flex-wrap: nowrap !important;
-                gap: 4px !important;
-                transform: scale(0.85);
-                transform-origin: top left;
-            }
-
-            /* Sağ Header: Challenges ve Daily Reward Üstte Sağda Alt Alta */
-            #header-right-panel {
-                transform: scale(0.85);
-                transform-origin: top right;
-                gap: 2px !important;
-            }
-
-            #header-reward-challenges-stack {
-                display: flex !important;
-                flex-direction: column !important;
-                align-items: flex-end !important;
-                gap: 2px !important;
-            }
-
-            #header-reward-challenges-stack button {
-                padding: 3px 8px !important;
-                font-size: 10px !important;
-                width: 130px !important;
-            }
-
-            /* Ana Menü: Ekranı tamamen kaplamadan sığdırma (Kaydırmasız - Zero Scroll) */
-            main#main-menu {
-                max-width: 380px !important;
-                width: 100% !important;
-                padding-top: 4px !important;
-                padding-bottom: 4px !important;
-                margin-top: 0 !important;
-                height: var(--app-height) !important;
-                overflow: hidden !important;
-                justify-content: center !important;
-                gap: 3px !important;
-            }
-
-            /* Logo: Kompakt boyut */
-            main#main-menu h1 {
-                font-size: 1.85rem !important;
-                margin-bottom: 2px !important;
-                line-height: 1 !important;
-            }
-            main#main-menu h1 span.text-xl,
-            main#main-menu h1 span.text-2xl {
-                font-size: 0.9rem !important;
-                bottom: -2px !important;
-                right: -24px !important;
-            }
-            main#main-menu i.fa-leaf {
-                font-size: 1rem !important;
-                top: -8px !important;
-                right: -8px !important;
-            }
-
-            /* Kullanıcı adı ve seviye */
-            main#main-menu .w-full.pl-2 {
-                margin-bottom: 2px !important;
-            }
-            main#main-menu .w-full.pl-2 span {
-                font-size: 9px !important;
-            }
-            #name-input {
-                height: 34px !important;
-                min-height: 34px !important;
-                font-size: 1rem !important;
-                margin-bottom: 4px !important;
-                padding: 2px 8px !important;
-            }
-
-            /* Pet ve Karakter Butonu */
-            #active-pet-btn {
-                height: 48px !important;
-                min-height: 48px !important;
-                margin-bottom: 4px !important;
-                padding: 4px 8px !important;
-            }
-            #active-pet-btn canvas {
-                width: 36px !important;
-                height: 36px !important;
-            }
-            #active-pet-btn span {
-                font-size: 10px !important;
-            }
-
-            /* Play Butonu */
-            #play-btn {
-                height: 44px !important;
-                min-height: 44px !important;
-                font-size: 1.35rem !important;
-                margin-bottom: 2px !important;
-            }
-
-            /* Alt Bilgilendirme ve Ekstra Kutular: Yatay ekranda gizle */
-            main#main-menu > div.w-full.mt-3.mb-3 {
-                display: none !important;
-            }
-            main#main-menu > div.flex.lg\:hidden.justify-center.gap-1\.5 {
-                display: none !important;
-            }
-            main#main-menu > div.flex.lg\:hidden.justify-center.w-full.mt-2 {
-                display: none !important;
-            }
-
-        } /* end of landing page landscape query */
+        /* Legacy landscape block removed - unified under modern responsive section */
 
         /* ══════════════════════════════════════════════════════════════
            GLOBAL MODAL & SHOP/COSMETICS AUTO-SCALING SYSTEM
@@ -2574,98 +2405,7 @@
             }
         }
 
-        /* Landing menu stays centered while its own content remains scrollable on short screens. */
-        #main-menu {
-            width: min(92vw, 440px);
-            max-height: calc(100dvh - 7rem);
-            min-height: 0;
-            overflow-x: hidden;
-            overflow-y: auto;
-            overscroll-behavior: contain;
-            scrollbar-width: thin;
-            scrollbar-gutter: stable;
-            padding-bottom: 2.75rem;
-        }
 
-        #main-menu > * {
-            min-width: 0;
-        }
-
-        #main-menu .btn-3d,
-        #main-menu input {
-            max-width: 100%;
-        }
-
-        .io-games-play-row {
-            width: 100%;
-            margin-bottom: 12px;
-        }
-
-        .io-games-play-row #play-btn {
-            width: 100%;
-            min-width: 0;
-        }
-
-        @media (min-width: 901px) {
-            #main-menu {
-                max-height: calc(100dvh - 5rem);
-                padding-bottom: 3rem;
-            }
-        }
-
-        @media (max-width: 640px) {
-            #main-menu {
-                width: min(94vw, 440px);
-                max-height: calc(100dvh - 8.5rem);
-                padding: 7rem 0.5rem 2.75rem !important;
-            }
-
-            #main-menu > .relative:first-child {
-                margin-bottom: 0.5rem !important;
-            }
-
-            #main-menu .text-xl,
-            #main-menu .sm\\:text-\\[1\\.7rem\\] {
-                font-size: clamp(1rem, 5vw, 1.7rem);
-            }
-
-            #main-menu .flex.lg\\:hidden {
-                gap: 0.3rem;
-            }
-
-            #main-menu .flex.lg\\:hidden .btn-3d {
-                flex: 1 1 18%;
-                min-width: 0;
-                padding-inline: 0.35rem;
-                white-space: nowrap;
-            }
-        }
-
-        @media (max-width: 380px) {
-            #main-menu {
-                width: 96vw;
-                padding-inline: 0.25rem !important;
-            }
-
-            #main-menu #active-pet-btn {
-                height: 4.75rem;
-            }
-
-            #main-menu #active-pet-btn > div:first-child {
-                width: 3.25rem;
-                height: 3.25rem;
-            }
-
-            #main-menu #active-pet-btn .absolute {
-                right: 0.35rem;
-                gap: 0.2rem;
-            }
-
-            #main-menu #active-pet-btn .icon-badge {
-                width: 1.75rem;
-                height: 1.75rem;
-            }
-        }
         /* Portrait viewport contract: keep the menu flush with every device edge. */
         @media (orientation: portrait) {
             html, body {
@@ -2737,21 +2477,6 @@
             border: 3px solid #ff9d00;
             box-shadow: 0 6px 16px rgba(0,0,0,0.6), 0 0 12px rgba(255, 120, 0, 0.4);
             cursor: pointer;
-        }
-        @media (max-height: 540px), (max-width: 640px) {
-            #left-invite-event-widget {
-                top: 56px !important;
-                left: 8px !important;
-                transform-origin: top left;
-                transform: scale(0.82);
-            }
-        }
-        @media (max-height: 440px) {
-            #left-invite-event-widget {
-                top: 46px !important;
-                left: 6px !important;
-                transform: scale(0.72);
-            }
         }
         .invite-milestone-card {
             background: linear-gradient(180deg, rgba(62, 33, 14, 0.95), rgba(30, 16, 7, 0.95));
@@ -2924,369 +2649,705 @@
             color: #f472b6;
             box-shadow: 0 0 12px rgba(236, 72, 153, 0.35);
         }
-        @media (max-height: 540px), (max-width: 640px) {
-            #left-events-container {
-                top: 52px !important;
-                left: 8px !important;
-                transform-origin: top left;
-                transform: scale(0.80);
-                gap: 6px !important;
-            }
-        }
-        @media (max-height: 440px) {
-            #left-events-container {
-                top: 42px !important;
-                left: 6px !important;
-                transform: scale(0.68);
-            }
-        }
 
-        /* Final responsive landing contract: one predictable flow for every viewport. */
+        /* ══════════════════════════════════════════════════════════════
+           PREMIUM RESPONSIVE & MOBILE ARCHITECTURE (iPhone & Android)
+           Sıfır çakışma, kusursuz safe-area ve cam morfik oyun hissi
+           ══════════════════════════════════════════════════════════════ */
         html,
         body {
-            box-sizing: border-box;
+            box-sizing: border-box !important;
+            width: 100vw !important;
+            max-width: 100vw !important;
+            height: var(--app-height) !important;
+            min-height: var(--app-height) !important;
+            overflow: hidden !important;
+            overflow-x: hidden !important;
+            margin: 0 !important;
+            padding: 0 !important;
         }
 
         body {
-            overflow: hidden;
-            padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+            position: fixed !important;
+            inset: 0 !important;
+            overflow: hidden !important;
+            overflow-x: hidden !important;
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: center !important;
+            justify-content: center !important;
         }
 
+        /* Ana Menü: Ortalanmış, taşmasız, akıcı dikey kaydırma */
         #main-menu {
             position: relative !important;
             inset: auto !important;
             display: flex !important;
-            flex: 0 1 auto !important;
-            align-self: center;
-            box-sizing: border-box;
-            width: min(440px, calc(100vw - 32px)) !important;
-            max-width: 440px !important;
-            height: auto !important;
-            max-height: calc(100dvh - 40px) !important;
+            flex-direction: column !important;
+            align-items: center !important;
+            box-sizing: border-box !important;
+            width: 100% !important;
+            max-width: min(calc(100vw - 16px), 420px) !important;
+            height: var(--app-height) !important;
+            max-height: var(--app-height) !important;
             min-height: 0 !important;
             margin: 0 auto !important;
-            padding: 1.75rem 1rem 2rem !important;
+            padding-top: max(58px, calc(env(safe-area-inset-top, 0px) + 48px)) !important;
+            padding-bottom: max(96px, calc(env(safe-area-inset-bottom, 0px) + 84px)) !important;
+            padding-left: 8px !important;
+            padding-right: 8px !important;
             overflow-x: hidden !important;
             overflow-y: auto !important;
-            overscroll-behavior: contain;
-            scrollbar-width: thin;
+            overscroll-behavior: contain !important;
+            -webkit-overflow-scrolling: touch !important;
+            scrollbar-width: none !important;
+        }
+        #main-menu::-webkit-scrollbar {
+            display: none !important;
         }
 
         #main-menu > * {
             flex: 0 0 auto;
             width: 100% !important;
             max-width: 100% !important;
-            min-width: 0;
-            box-sizing: border-box;
+            min-width: 0 !important;
+            box-sizing: border-box !important;
         }
 
+        /* Logo */
         #main-menu > .relative:first-child {
-            margin-bottom: 1rem !important;
+            margin-bottom: 0.5rem !important;
+            display: flex !important;
+            justify-content: center !important;
         }
-
         #main-menu > .relative:first-child h1 {
-            font-size: 3.7rem;
-            line-height: .92;
+            font-size: clamp(2.3rem, 8vw, 3.6rem) !important;
+            line-height: 0.95 !important;
+            text-align: center !important;
+            position: relative !important;
+        }
+        @media (max-width: 640px) {
+            #main-menu h1 {
+                display: inline-flex !important;
+                align-items: baseline !important;
+                justify-content: center !important;
+            }
+            #main-menu h1 span.text-xl,
+            #main-menu h1 span.text-2xl {
+                position: relative !important;
+                right: auto !important;
+                bottom: auto !important;
+                display: inline-block !important;
+                font-size: 1.15rem !important;
+                margin-left: 2px !important;
+            }
         }
 
+        /* Kullanıcı Adı Girişi */
         #name-input {
-            height: 3.5rem !important;
-            min-height: 3.5rem !important;
-            margin-bottom: .75rem !important;
+            height: 48px !important;
+            min-height: 48px !important;
+            font-size: 1.25rem !important;
+            margin-bottom: 0.65rem !important;
+            background: linear-gradient(180deg, rgba(32, 20, 12, 0.88), rgba(20, 12, 7, 0.95)) !important;
+            border: 2px solid rgba(247, 192, 45, 0.45) !important;
+            border-radius: 15px !important;
+            box-shadow: inset 0 2px 6px rgba(0,0,0,0.8), 0 4px 14px rgba(0,0,0,0.4) !important;
+            color: #fff !important;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.7) !important;
+            transition: border-color 0.2s, box-shadow 0.2s !important;
+            box-sizing: border-box !important;
+        }
+        #name-input:focus {
+            border-color: #F7C02D !important;
+            box-shadow: inset 0 2px 6px rgba(0,0,0,0.8), 0 0 16px rgba(247, 192, 45, 0.4) !important;
+            outline: none !important;
         }
 
+        /* Aktif Karakter / Pet Butonu */
         #active-pet-btn {
-            height: 5.75rem !important;
-            min-height: 5.75rem !important;
-            margin-bottom: .75rem !important;
+            height: 74px !important;
+            min-height: 74px !important;
+            margin-bottom: 0.65rem !important;
+            padding: 6px 10px !important;
+            border-radius: 16px !important;
+            border: 2.5px solid rgba(247, 192, 45, 0.35) !important;
+            background: linear-gradient(135deg, rgba(46, 28, 14, 0.92) 0%, rgba(24, 14, 7, 0.96) 100%) !important;
+            box-shadow: 0 4px 14px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.12) !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: flex-start !important;
+            position: relative !important;
+            overflow: hidden !important;
+            transition: transform 0.15s ease, border-color 0.2s ease !important;
+            box-sizing: border-box !important;
+        }
+        #active-pet-btn:active {
+            transform: scale(0.98) !important;
+        }
+        #active-pet-btn > div:first-child {
+            width: 56px !important;
+            height: 56px !important;
+            min-width: 56px !important;
+            border-radius: 12px !important;
+            border: 1.5px solid rgba(247, 192, 45, 0.3) !important;
+        }
+        #active-pet-btn canvas {
+            width: 52px !important;
+            height: 52px !important;
+        }
+        #active-pet-name {
+            font-size: 1.2rem !important;
+            line-height: 1.1 !important;
+        }
+        #active-pet-sub {
+            font-size: 9.5px !important;
+        }
+        #active-pet-btn .pet-card-badges {
+            position: relative !important;
+            right: auto !important;
+            margin-left: auto !important;
+            display: flex !important;
+            gap: 4px !important;
+            flex-shrink: 0 !important;
+        }
+        #active-pet-btn .icon-badge {
+            width: 28px !important;
+            height: 28px !important;
+            border-radius: 8px !important;
+        }
+        #active-pet-btn .icon-badge i {
+            font-size: 11px !important;
         }
 
+        /* Büyük 3D Play Butonu */
+        .io-games-play-row {
+            width: 100% !important;
+            margin-bottom: 0.65rem !important;
+            box-sizing: border-box !important;
+        }
         #play-btn {
             width: 100% !important;
-            height: 5.75rem !important;
-            min-height: 5.75rem !important;
-            margin-bottom: .75rem !important;
+            height: 74px !important;
+            min-height: 74px !important;
+            border-radius: 20px !important;
+            border: 3px solid #1f1108 !important;
+            background: linear-gradient(180deg, #8ae045 0%, #68be27 60%, #4a8c1c 100%) !important;
+            box-shadow: 0 6px 0 #315c13, 0 10px 24px rgba(104, 190, 39, 0.45) !important;
+            transition: transform 0.1s ease, box-shadow 0.1s ease !important;
+            box-sizing: border-box !important;
+        }
+        #play-btn:active {
+            transform: translateY(4px) !important;
+            box-shadow: 0 2px 0 #315c13, 0 4px 12px rgba(104, 190, 39, 0.35) !important;
+        }
+        #play-btn-text {
+            font-family: 'Lilita One', cursive !important;
+            font-size: clamp(2.4rem, 8vw, 3.2rem) !important;
+            letter-spacing: 2px !important;
+            -webkit-text-stroke: 2px #1f1108 !important;
+            text-shadow: 0 4px 0 rgba(0,0,0,0.4) !important;
         }
 
+        /* Shop & Cosmetics Buton Izgarası */
         #action-buttons-grid {
-            margin: 0 0 .75rem !important;
-            gap: .5rem !important;
+            width: 100% !important;
+            display: grid !important;
+            grid-template-columns: 1fr 1fr !important;
+            gap: 8px !important;
+            margin-bottom: 0.75rem !important;
+            box-sizing: border-box !important;
         }
-
         #action-buttons-grid button {
-            min-width: 0;
-            min-height: 3.75rem;
+            height: 54px !important;
+            min-height: 54px !important;
+            border-radius: 14px !important;
+            font-size: 1.1rem !important;
+            border-width: 2.5px !important;
+            min-width: 0 !important;
+            box-sizing: border-box !important;
+        }
+        #action-buttons-grid button:first-child {
+            background: linear-gradient(180deg, #fce068 0%, #f7c02d 60%, #b88514 100%) !important;
+            box-shadow: 0 4px 0 #7e5907, 0 6px 16px rgba(247, 192, 45, 0.35) !important;
+        }
+        #action-buttons-grid button:last-child {
+            background: linear-gradient(180deg, #b066f0 0%, #9d4edd 60%, #672199 100%) !important;
+            box-shadow: 0 4px 0 #451269, 0 6px 16px rgba(157, 78, 221, 0.35) !important;
         }
 
-        #left-events-container {
-            max-width: min(224px, 31vw);
-            transform-origin: top left;
-        }
-
-        #header-right-panel {
-            max-width: min(190px, 22vw);
-        }
-
-        @media (max-width: 900px) {
-            #main-menu {
-                width: min(440px, calc(100vw - 24px)) !important;
-                max-height: calc(100dvh - 24px) !important;
-                padding-top: 3.5rem !important;
-                padding-bottom: 1.5rem !important;
-            }
-
-            #main-menu > .relative:first-child h1 {
-                font-size: 3rem;
-            }
-
-            #left-events-container {
-                max-width: 190px;
-                transform: scale(.86);
-            }
-
-            #header-right-panel {
-                transform: scale(.86);
-                transform-origin: top right;
-            }
-        }
-
-        @media (max-width: 640px) {
-            #main-menu {
-                width: calc(100vw - 16px) !important;
-                max-height: calc(100dvh - 12px) !important;
-                padding: 4rem .5rem 1.25rem !important;
-            }
-
-            #main-menu > .relative:first-child {
-                margin-bottom: .75rem !important;
-            }
-
-            #main-menu > .relative:first-child h1 {
-                font-size: 2.55rem;
-            }
-
-            #name-input {
-                height: 3rem !important;
-                min-height: 3rem !important;
-                font-size: 1.15rem !important;
-            }
-
-            #active-pet-btn {
-                height: 4.5rem !important;
-                min-height: 4.5rem !important;
-            }
-
-            #active-pet-btn > div:first-child {
-                width: 3.5rem !important;
-                height: 3.5rem !important;
-            }
-
-            #play-btn {
-                height: 4.5rem !important;
-                min-height: 4.5rem !important;
-            }
-
-            #play-btn-text {
-                font-size: 2.55rem !important;
-            }
-
-            #left-events-container {
-                max-width: 164px;
-                transform: scale(.72);
-            }
-
-            #header-right-panel {
-                display: none !important;
-            }
-        }
-
-        @media (max-width: 380px) {
-            #main-menu {
-                width: calc(100vw - 8px) !important;
-                padding-inline: .25rem !important;
-            }
-
-            #main-menu > .relative:first-child h1 {
-                font-size: 2.25rem;
-            }
-
-            #active-pet-btn {
-                height: 4.1rem !important;
-                min-height: 4.1rem !important;
-            }
-
-            #active-pet-btn > div:first-child {
-                width: 3rem !important;
-                height: 3rem !important;
-            }
-
-            #play-btn {
-                height: 4.1rem !important;
-                min-height: 4.1rem !important;
-            }
-
-            #play-btn-text {
-                font-size: 2.25rem !important;
-            }
-        }
-
-        @media (orientation: landscape) and (max-height: 640px) {
-            #main-menu {
-                width: min(400px, calc(100vw - 250px)) !important;
-                max-height: calc(100dvh - 8px) !important;
-                padding: .5rem .75rem 1rem !important;
-            }
-
-            #main-menu > .relative:first-child {
-                margin-bottom: .35rem !important;
-            }
-
-            #main-menu > .relative:first-child h1 {
-                font-size: 2.1rem;
-            }
-
-            #name-input {
-                height: 2.35rem !important;
-                min-height: 2.35rem !important;
-                margin-bottom: .35rem !important;
-            }
-
-            #active-pet-btn {
-                height: 3.55rem !important;
-                min-height: 3.55rem !important;
-                margin-bottom: .35rem !important;
-            }
-
-            #active-pet-btn > div:first-child {
-                width: 2.65rem !important;
-                height: 2.65rem !important;
-            }
-
-            #play-btn {
-                height: 3.6rem !important;
-                min-height: 3.6rem !important;
-                margin-bottom: .35rem !important;
-            }
-
-            #play-btn-text {
-                font-size: 1.8rem !important;
-            }
-
-            #action-buttons-grid {
-                margin-bottom: .35rem !important;
-            }
-
-            #action-buttons-grid button {
-                min-height: 2.75rem;
-            }
-
-            #main-menu > div.w-full.mt-3.mb-3,
-            #main-menu > div.flex.lg\:hidden.justify-center.gap-1\.5,
-            #main-menu > div.flex.lg\:hidden.justify-center.w-full.mt-2 {
-                display: none !important;
-            }
-
-            #left-events-container {
-                max-width: 150px;
-                transform: scale(.62);
-            }
-
-            #header-right-panel {
-                transform: scale(.7);
-            }
-        }
-
-        /* Event widgets stay visible below the starter card without covering the profile HUD. */
-        #left-events-container > div {
-            min-width: 0;
-        }
-
-        #left-events-container .invite-banner-card,
-        #left-events-container .creator-banner-card {
-            box-sizing: border-box;
-            width: 240px;
-        }
-
-        @media (orientation: portrait), (max-width: 640px) {
-            #left-events-container {
+        /* ══════════════════════════════════════════════════════════════
+           MOBİL HEADER & ÜST ÇUBUK UYARLAMALARI (iPhone & Android)
+           ══════════════════════════════════════════════════════════════ */
+        @media (max-width: 768px) {
+            header {
+                position: fixed !important;
+                top: 0 !important;
+                left: 0 !important;
+                right: 0 !important;
+                width: 100vw !important;
+                max-width: 100vw !important;
                 transform: none !important;
+                margin: 0 !important;
+                padding-top: max(8px, env(safe-area-inset-top, 8px)) !important;
+                padding-left: max(8px, env(safe-area-inset-left, 8px)) !important;
+                padding-right: max(8px, env(safe-area-inset-right, 8px)) !important;
+                padding-bottom: 6px !important;
+                display: flex !important;
+                justify-content: space-between !important;
+                align-items: center !important;
+                z-index: 40 !important;
+                background: linear-gradient(180deg, rgba(14, 20, 10, 0.94) 0%, rgba(14, 20, 10, 0.72) 80%, transparent 100%) !important;
+                backdrop-filter: blur(12px) !important;
+                -webkit-backdrop-filter: blur(12px) !important;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4) !important;
+                pointer-events: none !important;
+                box-sizing: border-box !important;
+            }
+
+            #header-left-bar {
+                display: flex !important;
                 flex-direction: row !important;
+                flex-wrap: nowrap !important;
+                justify-content: space-between !important;
+                align-items: center !important;
+                width: 100% !important;
+                gap: 4px !important;
+                pointer-events: auto !important;
             }
 
-            #left-events-container > div {
-                flex: 1 1 0;
-                width: calc(50% - 4px);
-                align-items: stretch;
+            #header-right-panel {
+                display: none !important;
             }
 
+            #header-settings-section {
+                order: 1 !important;
+                display: flex !important;
+                align-items: center !important;
+                gap: 3px !important;
+                flex-shrink: 0 !important;
+            }
+            #header-settings-section button {
+                padding: 4px 6px !important;
+                min-width: 28px !important;
+                height: 28px !important;
+                font-size: 11px !important;
+                border-radius: 8px !important;
+            }
+            #header-settings-section button i {
+                font-size: 12px !important;
+            }
+
+            /* Mobilde sunucu sekmesini üstten kaldır - yer aç */
+            #header-server-section {
+                display: none !important;
+            }
+
+            #header-guest-view.hidden,
+            #header-user-view.hidden {
+                display: none !important;
+            }
+
+            #header-guest-view:not(.hidden),
+            #header-user-view:not(.hidden) {
+                order: 2 !important;
+                display: flex !important;
+                align-items: center !important;
+                gap: 4px !important;
+                flex-shrink: 0 !important;
+                margin-left: auto !important;
+            }
+            #header-guest-view button,
+            #header-user-view button {
+                padding: 3px 6px !important;
+                height: 28px !important;
+                border-radius: 8px !important;
+            }
+          /* ══════════════════════════════════════════════════════════════
+           YATAY MOBİL (LANDSCAPE) - 3-KOLONLU ULTRA-PREMİUM KOKPİT DÜZENİ
+           Sol: Etkinlikler | Orta: Oyun & Karakter | Sağ: Görevler & Sosyal
+           ══════════════════════════════════════════════════════════════ */
+        @media (orientation: landscape) and (max-height: 640px) {
+            body {
+                justify-content: flex-start !important;
+                overflow: hidden !important;
+            }
+
+            header {
+                position: fixed !important;
+                top: 0 !important;
+                left: 0 !important;
+                right: 0 !important;
+                width: 100vw !important;
+                max-width: 100vw !important;
+                height: 38px !important;
+                min-height: 38px !important;
+                margin: 0 !important;
+                padding-top: max(3px, env(safe-area-inset-top, 3px)) !important;
+                padding-left: max(8px, env(safe-area-inset-left, 8px)) !important;
+                padding-right: max(8px, env(safe-area-inset-right, 8px)) !important;
+                padding-bottom: 3px !important;
+                display: flex !important;
+                justify-content: space-between !important;
+                align-items: center !important;
+                z-index: 40 !important;
+                background: linear-gradient(180deg, rgba(14, 20, 10, 0.96) 0%, rgba(14, 20, 10, 0.85) 100%) !important;
+                backdrop-filter: blur(12px) !important;
+                -webkit-backdrop-filter: blur(12px) !important;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+                box-sizing: border-box !important;
+            }
+
+            #header-left-bar {
+                display: flex !important;
+                flex-direction: row !important;
+                flex-wrap: nowrap !important;
+                align-items: center !important;
+                width: auto !important;
+                gap: 4px !important;
+                pointer-events: auto !important;
+            }
+
+            #header-server-section {
+                display: flex !important;
+            }
+            #header-server-section .panel-inset {
+                padding: 2px 6px !important;
+                font-size: 9px !important;
+            }
+
+            #header-settings-section {
+                order: 1 !important;
+                display: flex !important;
+                align-items: center !important;
+                gap: 3px !important;
+            }
+            #header-settings-section button {
+                padding: 2px 5px !important;
+                min-width: 26px !important;
+                height: 26px !important;
+                font-size: 10px !important;
+                border-radius: 7px !important;
+            }
+
+            #header-guest-view.hidden,
+            #header-user-view.hidden {
+                display: none !important;
+            }
+            #header-guest-view:not(.hidden),
+            #header-user-view:not(.hidden) {
+                order: 2 !important;
+                display: flex !important;
+                align-items: center !important;
+                gap: 4px !important;
+                margin-left: auto !important;
+            }
+            #header-guest-view button,
+            #header-user-view button {
+                padding: 2px 6px !important;
+                height: 26px !important;
+                border-radius: 7px !important;
+            }
+
+            /* ── SOL KOLON: CANLI ETKİNLİKLER (Arkadaş Daveti & İçerik Üretici) ── */
+            #left-events-container {
+                display: flex !important;
+                visibility: visible !important;
+                pointer-events: auto !important;
+                position: fixed !important;
+                left: max(8px, env(safe-area-inset-left, 8px)) !important;
+                top: 48px !important;
+                bottom: 6px !important;
+                width: clamp(180px, 25vw, 215px) !important;
+                max-width: 220px !important;
+                overflow-y: auto !important;
+                scrollbar-width: none !important;
+                z-index: 25 !important;
+                flex-direction: column !important;
+                gap: 6px !important;
+                transform: none !important;
+                margin: 0 !important;
+            }
+            #left-events-container::-webkit-scrollbar { display: none; }
             #left-events-container .invite-banner-card,
             #left-events-container .creator-banner-card {
                 width: 100% !important;
-                min-height: 148px;
-                padding: 8px !important;
-                gap: 6px !important;
-                border-width: 3px;
+                padding: 6px 8px !important;
+                border-radius: 12px !important;
+                min-height: 0 !important;
+                overflow: hidden !important;
             }
 
-            #left-events-container .invite-banner-card > div:nth-child(3),
-            #left-events-container .creator-banner-card > div:nth-child(3) {
-                gap: 5px;
-                padding: 5px !important;
+            /* ── ORTA KOLON: HERO PLAY ALANI ── */
+            #main-menu {
+                position: fixed !important;
+                left: 50% !important;
+                transform: translateX(-50%) !important;
+                top: 48px !important;
+                bottom: 6px !important;
+                width: min(340px, calc(100vw - 440px)) !important;
+                max-width: 340px !important;
+                height: auto !important;
+                max-height: none !important;
+                overflow-y: auto !important;
+                scrollbar-width: none !important;
+                padding-top: 2px !important;
+                padding-bottom: 8px !important;
+                padding-left: 4px !important;
+                padding-right: 4px !important;
+                margin: 0 !important;
+                z-index: 20 !important;
+                display: flex !important;
+                flex-direction: column !important;
+                align-items: center !important;
             }
-
-            #left-events-container .invite-banner-card > div:nth-child(3) > div:first-child,
-            #left-events-container .creator-banner-card > div:nth-child(3) > div:first-child {
+            #main-menu::-webkit-scrollbar { display: none; }
+            #main-menu > .relative:first-child {
+                margin-bottom: 0.15rem !important;
+            }
+            #main-menu > .relative:first-child h1 {
+                font-size: 1.45rem !important;
+                line-height: 1 !important;
+            }
+            #main-menu > .relative:first-child h1 span.text-xl,
+            #main-menu > .relative:first-child h1 span.text-2xl {
+                font-size: 0.95rem !important;
+                position: relative !important;
+                right: auto !important;
+                bottom: auto !important;
+                display: inline-block !important;
+                margin-left: 2px !important;
+            }
+            #name-input {
+                height: 34px !important;
+                min-height: 34px !important;
+                font-size: 1.05rem !important;
+                margin-bottom: .25rem !important;
+            }
+            #active-pet-btn {
+                height: 48px !important;
+                min-height: 48px !important;
+                margin-bottom: .25rem !important;
+                padding: 4px 8px !important;
+            }
+            #active-pet-btn > div:first-child {
                 width: 36px !important;
                 height: 36px !important;
+                min-width: 36px !important;
+            }
+            #active-pet-btn canvas {
+                width: 34px !important;
+                height: 34px !important;
+            }
+            #active-pet-name {
+                font-size: 1rem !important;
+            }
+            .io-games-play-row {
+                width: 100% !important;
+                margin-bottom: 0.15rem !important;
+            }
+            #play-btn {
+                height: 48px !important;
+                min-height: 48px !important;
+                margin-bottom: 0 !important;
+            }
+            #play-btn-text {
+                font-size: 1.7rem !important;
+            }
+            #action-buttons-grid {
+                display: none !important;
             }
 
-            #left-events-container .invite-banner-card > div:nth-child(3) > div:nth-child(2),
-            #left-events-container .creator-banner-card > div:nth-child(3) > div:nth-child(2) {
-                min-width: 0;
-            }
-
-            #left-events-container .invite-banner-card > div:nth-child(3) span,
-            #left-events-container .creator-banner-card > div:nth-child(3) span {
-                font-size: 8px !important;
-            }
-
-            #left-events-container .invite-banner-card > div:nth-child(2) span,
-            #left-events-container .creator-banner-card > div:nth-child(2) span {
-                font-size: 8px !important;
-            }
-
-            #left-events-container .invite-banner-card button:last-child,
-            #left-events-container .creator-banner-card button:last-child {
-                min-height: 30px;
-                padding: 5px 3px !important;
-                font-size: 8px !important;
-            }
-        }
-
-        @media (orientation: landscape) and (min-width: 641px) {
-            #left-events-container {
+            /* ── SAĞ KOLON: GÖREVLER, ÖDÜL, SIRALAMA & SOSYAL ── */
+            #header-right-panel {
+                display: flex !important;
+                visibility: visible !important;
+                pointer-events: auto !important;
+                position: fixed !important;
+                right: max(8px, env(safe-area-inset-right, 8px)) !important;
+                top: 48px !important;
+                bottom: 6px !important;
+                width: clamp(170px, 23vw, 195px) !important;
+                max-width: 200px !important;
+                overflow-y: auto !important;
+                scrollbar-width: none !important;
+                z-index: 25 !important;
+                flex-direction: column !important;
+                gap: 5px !important;
+                align-items: stretch !important;
                 transform: none !important;
             }
-
-            #left-events-container #left-creator-event-widget {
-                order: 1;
+            #header-right-panel::-webkit-scrollbar { display: none; }
+            #header-reward-challenges-stack {
+                width: 100% !important;
+                max-width: 100% !important;
+            }
+            #header-reward-challenges-stack button {
+                height: 32px !important;
+                min-height: 32px !important;
+                font-size: 11px !important;
+            }
+            #header-right-panel .grid.grid-cols-2 {
+                width: 100% !important;
+            }
+            #header-right-panel .grid.grid-cols-2 button {
+                height: 30px !important;
+                min-height: 30px !important;
+                font-size: 10px !important;
             }
 
-            #left-events-container #left-invite-event-widget {
-                order: 2;
+            /* Yatay ekranda dock ve duplicate alanları gizle (zaten 3 kolonda açık) */
+            #mobile-bottom-dock {
+                display: none !important;
             }
-
-            #left-events-container .invite-banner-card,
-            #left-events-container .creator-banner-card {
-                width: 240px !important;
-                min-height: 166px;
+            .mobile-portrait-stream {
+                display: none !important;
+            }
+            #main-menu > div.w-full.mt-1.mb-3,
+            #main-menu > div.w-full.mt-3.mb-3,
+            #main-menu > div.flex.flex-col.items-center.gap-2\.5 {
+                display: none !important;
             }
         }
 
-        @media (orientation: portrait), (max-width: 640px) {
-            #left-events-container #left-invite-event-widget,
-            #left-events-container #left-creator-event-widget {
-                order: initial;
+        /* ── MOBİL PORTRE EKRAN KURALLARI (iPhone & Android Dikey) ── */
+        @media (orientation: portrait) {
+            #left-events-container {
+                display: none !important;
+                visibility: hidden !important;
+                pointer-events: none !important;
+            }
+            #header-right-panel {
+                display: none !important;
+                visibility: hidden !important;
+                pointer-events: none !important;
+            }
+            .mobile-portrait-stream {
+                display: flex !important;
+                width: 100% !important;
+            }
+            .mobile-portrait-stream .invite-banner-card,
+            .mobile-portrait-stream .creator-banner-card {
+                width: 100% !important;
+                max-width: 100% !important;
+                box-sizing: border-box !important;
+            }
+            #mobile-bottom-dock {
+                display: flex !important;
+            }
+        }
+        @media (orientation: landscape) {
+            .mobile-portrait-stream {
+                display: none !important;
+            }
+        }
+        @media (min-width: 1025px) {
+            .mobile-portrait-stream {
+                display: none !important;
+            }
+        }
+
+        /* ── MASAÜSTÜ GENİŞ EKRAN (>= 1025px Landscape) ── */
+        @media (min-width: 1025px) and (orientation: landscape) {
+            #left-events-container {
+                display: flex !important;
+                visibility: visible !important;
+                pointer-events: auto !important;
+                position: fixed !important;
+                left: clamp(12px, 2vw, 32px) !important;
+                top: clamp(80px, 14vh, 130px) !important;
+                width: 230px !important;
+                max-width: 230px !important;
+                z-index: 25 !important;
+                transform: none !important;
+            }
+            #left-events-container .invite-banner-card,
+            #left-events-container .creator-banner-card {
+                width: 230px !important;
+                min-height: 156px;
+            }
+            #header-right-panel {
+                display: flex !important;
+            }
+            #mobile-bottom-dock {
+                display: none !important;
+            }
+        }
+
+        /* Premium Mobile Floating Bottom Navigation Dock (iPhone & Android) */
+        #mobile-bottom-dock {
+            position: fixed !important;
+            bottom: max(10px, env(safe-area-inset-bottom, 10px)) !important;
+            left: 50% !important;
+            transform: translateX(-50%) !important;
+            width: min(calc(100vw - 16px), 400px) !important;
+            max-width: calc(100vw - 16px) !important;
+            height: 58px !important;
+            z-index: 45 !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: space-around !important;
+            padding: 4px 6px !important;
+            gap: 4px !important;
+            background: rgba(18, 12, 6, 0.94) !important;
+            border: 1.5px solid rgba(247, 192, 45, 0.35) !important;
+            border-radius: 20px !important;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.85), inset 0 1px 0 rgba(255, 255, 255, 0.18) !important;
+            backdrop-filter: blur(20px) !important;
+            -webkit-backdrop-filter: blur(20px) !important;
+            box-sizing: border-box !important;
+        }
+        #mobile-bottom-dock .dock-btn {
+            flex: 1 1 0 !important;
+            min-width: 0 !important;
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: center !important;
+            justify-content: center !important;
+            height: 48px !important;
+            padding: 2px 1px !important;
+            border-radius: 12px !important;
+            transition: transform 0.15s ease, background 0.15s ease !important;
+            cursor: pointer !important;
+            user-select: none !important;
+            text-decoration: none !important;
+            background: rgba(255, 255, 255, 0.04) !important;
+            border: 1px solid rgba(255, 255, 255, 0.08) !important;
+            overflow: hidden !important;
+        }
+        #mobile-bottom-dock .dock-btn:active {
+            transform: scale(0.92) !important;
+            background: rgba(247, 192, 45, 0.22) !important;
+        }
+        #mobile-bottom-dock .dock-btn i {
+            font-size: 15px !important;
+            margin-bottom: 2px !important;
+        }
+        #mobile-bottom-dock .dock-btn span {
+            font-family: 'Lilita One', cursive !important;
+            font-size: 8.5px !important;
+            letter-spacing: 0.2px !important;
+            color: #f4e4c6 !important;
+            line-height: 1 !important;
+            white-space: nowrap !important;
+        }
+
+        @media (min-width: 1024px) {
+            #mobile-bottom-dock {
+                display: none !important;
+            }
+        }
+        @media (orientation: landscape) {
+            #mobile-bottom-dock {
+                display: none !important;
+            }
+        }
+
+        /* Hide fixed desktop footer on mobile devices so it doesn't overlap the dock */
+        @media (max-width: 1023px) {
+            body > footer {
+                display: none !important;
             }
         }
 
@@ -3389,7 +3450,7 @@
     <header class="fixed top-2 left-1/2 -translate-x-1/2 w-[calc(100%-12px)] max-w-[1440px] flex justify-between items-start z-30 pointer-events-none">
         
         <!-- Sol Bölüm (Auth, Sunucu, Ayarlar) -->
-        <div class="flex flex-wrap items-center gap-1.5 sm:gap-2 pointer-events-auto">
+        <div id="header-left-bar" class="flex flex-wrap items-center gap-1.5 sm:gap-2 pointer-events-auto">
             
             <!-- Guest Durumu (Giriş Yapılmamış) -->
             <div id="header-guest-view" class="flex items-center gap-1.5">
@@ -3446,7 +3507,7 @@
             </div>
             
             <!-- Home & Sunucu Seçimi -->
-            <div class="flex items-center gap-1">
+            <div id="header-server-section" class="flex items-center gap-1">
                 <button onclick="window.location.reload()" title="Yenile / Ana Menü" class="btn-3d btn-action p-1.5 px-2.5">
                     <i class="fa-solid fa-house text-[#D94838] text-base drop-shadow-md"></i>
                 </button>
@@ -3466,7 +3527,7 @@
             </div>
             
             <!-- Ses ve Ayarlar -->
-            <div class="flex items-center gap-1">
+            <div id="header-settings-section" class="flex items-center gap-1">
                 <button id="btn-sound-toggle" onclick="toggleAudioMute()" title="Sesi Aç/Kapat" class="btn-3d btn-action p-1.5 px-2.5">
                     <i id="sound-icon" class="fa-solid fa-volume-high text-white text-base drop-shadow-md"></i>
                 </button>
@@ -3685,7 +3746,7 @@
                 <span id="active-pet-sub" class="font-black text-[10px] sm:text-[11px] text-amber-200 mt-1 flex items-center gap-1.5"><i class="fa-solid fa-khanda text-amber-300"></i><span>Temel Kılıç</span> <span class="text-green-400 font-bold text-[9px]">(Kuşanıldı)</span></span>
             </div>
             
-            <div class="absolute right-3 flex gap-1.5">
+            <div class="pet-card-badges absolute right-3 flex gap-1.5">
                 <div class="icon-badge icon-fire w-8 h-8 sm:w-9 sm:h-9" title="Saldırı Gücü">
                     <i class="fa-solid fa-fire text-white text-sm"></i>
                 </div>
@@ -3716,7 +3777,83 @@
             </button>
         </div>
 
-        <div class="w-full mt-3 mb-3">
+        <!-- ================= MOBİL PORTRE HER EKRANDA GÖZÜKEN ETKİNLİK VE GÖREVLER ================= -->
+        <div class="mobile-portrait-stream w-full flex flex-col gap-2.5 mb-3">
+            
+            <!-- 1. GÖREVLER & GÜNLÜK ÖDÜL KARTLARI (CHALLENGES & DAILY REWARD) -->
+            <div class="grid grid-cols-2 gap-2 w-full">
+                <button onclick="openModal('challengesModal'); updateChallengeProgress(); playSfx('click')" class="btn-3d btn-play h-12 flex items-center justify-center gap-2 rounded-xl shadow-lg group">
+                    <i class="fa-solid fa-star text-amber-300 text-sm drop-shadow-sm group-hover:scale-110 transition"></i>
+                    <span class="font-io text-xs tracking-wide text-white stroke-text">CHALLENGES</span>
+                </button>
+                <button onclick="openModal('dailyRewardModal'); updateDailyRewardPanel(); playSfx('click')" class="btn-3d btn-yellow h-12 flex items-center justify-center gap-2 rounded-xl shadow-lg group">
+                    <i class="fa-solid fa-gift text-sm drop-shadow-sm group-hover:scale-110 transition"></i>
+                    <span class="font-io text-xs tracking-wide text-[#1F1108] stroke-text-dark">DAILY REWARD</span>
+                </button>
+            </div>
+
+            <!-- 2. CANLI ETKİNLİK 1: ARKADAŞ DAVETİ -->
+            <div onclick="openFriendInviteModal(); playSfx('click')" class="invite-banner-card flex items-center justify-between p-2.5 pr-3 rounded-2xl border-[2.5px] border-[#ff9d00] shadow-2xl relative overflow-hidden group cursor-pointer hover:brightness-110 active:scale-[0.98] transition">
+                <div class="invite-flame-glow pointer-events-none"></div>
+                <div class="flex items-center gap-2.5 z-10 min-w-0 flex-1">
+                    <div class="w-11 h-11 rounded-xl bg-gradient-to-br from-[#4a1804] to-[#1a0802] border-2 border-[#ff9d00] flex items-center justify-center shadow-inner shrink-0 relative">
+                        <i class="fa-solid fa-fire text-amber-400 text-lg animate-pulse"></i>
+                        <span class="absolute -top-1.5 -right-1.5 bg-red-600 text-[8px] font-black px-1 rounded-full text-white">HOT</span>
+                    </div>
+                    <div class="flex flex-col text-left min-w-0 flex-1">
+                        <div class="flex items-center gap-1.5">
+                            <span class="font-io text-amber-300 text-xs stroke-text tracking-wide whitespace-nowrap">ARKADAŞ DAVETİ</span>
+                            <span class="text-[9px] font-black text-green-400 bg-black/60 px-1.5 py-0.2 rounded border border-green-500/40">0/5</span>
+                        </div>
+                        <span class="text-[10px] text-gray-200 font-bold leading-tight mt-0.5 truncate">5 Arkadaşını Çağır, Özel Kurt Kostümü Kazan!</span>
+                    </div>
+                </div>
+                <div class="flex items-center gap-1.5 shrink-0 z-10 pl-2">
+                    <span class="hidden sm:inline font-io text-[10px] text-amber-300 stroke-text-dark">ÖDÜLLER</span>
+                    <div class="w-7 h-7 rounded-lg bg-amber-500/25 border border-amber-400/50 flex items-center justify-center text-amber-300 text-xs shadow">
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3. CANLI ETKİNLİK 2: İÇERİK ÜRETİCİ (TIKTOK/YT) -->
+            <div onclick="openCreatorEventModal(); playSfx('click')" class="creator-banner-card flex items-center justify-between p-2.5 pr-3 rounded-2xl border-[2.5px] border-[#a855f7] shadow-2xl relative overflow-hidden group cursor-pointer hover:brightness-110 active:scale-[0.98] transition">
+                <div class="creator-flame-glow pointer-events-none"></div>
+                <div class="flex items-center gap-2.5 z-10 min-w-0 flex-1">
+                    <div class="w-11 h-11 rounded-xl bg-gradient-to-br from-[#3b0764] to-[#1e0538] border-2 border-[#c084fc] flex items-center justify-center shadow-inner shrink-0 relative">
+                        <i class="fa-solid fa-video text-pink-300 text-base animate-pulse"></i>
+                        <span class="absolute -top-1.5 -right-1.5 bg-purple-600 text-[8px] font-black px-1 rounded-full text-white">PRO</span>
+                    </div>
+                    <div class="flex flex-col text-left min-w-0 flex-1">
+                        <div class="flex items-center gap-1.5">
+                            <span class="font-io text-pink-300 text-xs stroke-text tracking-wide whitespace-nowrap">İÇERİK ÜRETİCİ</span>
+                            <span class="text-[9px] font-black text-purple-200 bg-purple-950/80 px-1.5 py-0.2 rounded border border-purple-500/40">200K 🪙</span>
+                        </div>
+                        <span class="text-[10px] text-gray-200 font-bold leading-tight mt-0.5 truncate">TikTok & YouTube Video Çek, Kristal Kazan!</span>
+                    </div>
+                </div>
+                <div class="flex items-center gap-1.5 shrink-0 z-10 pl-2">
+                    <span class="hidden sm:inline font-io text-[10px] text-purple-300 stroke-text-dark">KATIL</span>
+                    <div class="w-7 h-7 rounded-lg bg-purple-500/25 border border-purple-400/50 flex items-center justify-center text-purple-300 text-xs shadow">
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 4. TOPLULUK & SOSYAL BUTONLAR (PARTİ & TIKTOK) -->
+            <div class="grid grid-cols-2 gap-2 w-full">
+                <button onclick="openModal('partyModal'); playSfx('click')" class="btn-3d btn-action h-11 flex items-center justify-center gap-2 rounded-xl font-io text-xs text-white">
+                    <i class="fa-solid fa-users text-[#79D138] text-base drop-shadow-sm"></i>
+                    <span>PARTİ KUR / KATIL</span>
+                </button>
+                <button onclick="openTikTok()" class="btn-3d btn-action h-11 flex items-center justify-center gap-2 rounded-xl font-io text-xs text-[#00f2ea]">
+                    <i class="fa-brands fa-tiktok text-base drop-shadow-sm"></i>
+                    <span>RESMİ TIKTOK</span>
+                </button>
+            </div>
+        </div>
+
+        <div class="w-full mt-1 mb-3">
             <div class="panel-inset p-2 sm:p-3">
                 <div class="flex items-center justify-between gap-2">
                     <div class="flex items-center gap-2 min-w-0">
@@ -3750,29 +3887,47 @@
                 <div id="home-leaderboard-list" class="mt-2 flex flex-col gap-1"></div>
             </div>
         </div>
-        <!-- Mobil İçin En Alt Hızlı Çubuk -->
-        <div class="flex lg:hidden justify-center gap-1.5 w-full mt-4 flex-wrap">
-            <button onclick="openModal('challengesModal'); updateChallengeProgress(); playSfx('click')" class="btn-3d btn-play px-2.5 py-1.5 font-io text-white stroke-text text-[10px] flex items-center gap-1">
-                <i class="fa-solid fa-star text-amber-300"></i> GÖREV
-            </button>
-            <button onclick="openModal('dailyRewardModal'); updateDailyRewardPanel(); playSfx('click')" class="btn-3d btn-yellow px-2.5 py-1.5 font-io text-[10px] flex items-center gap-1 stroke-text-dark">
-                <i class="fa-solid fa-gift"></i> ÖDÜL
-            </button>
-            <button onclick="openTikTok()" class="btn-3d btn-action px-2.5 py-1.5 font-io text-white stroke-text text-[10px] flex items-center gap-1">
-                <i class="fa-brands fa-tiktok text-[#00f2ea]"></i> TIKTOK
-            </button>
-            <button onclick="openModal('leadersModal'); playSfx('click')" class="btn-3d btn-action px-2.5 py-1.5 font-io text-white stroke-text text-[10px] flex items-center gap-1">
-                <i class="fa-solid fa-crown text-yellow-400"></i> SIRA
-            </button>
-            <button onclick="openModal('partyModal'); playSfx('click')" class="btn-3d btn-action px-2.5 py-1.5 font-io text-white stroke-text text-[10px] flex items-center gap-1">
-                <i class="fa-solid fa-users text-[#79D138]"></i> PARTİ
-            </button>
-        </div>
-        <div class="flex lg:hidden justify-center w-full mt-2 gap-4 mb-3">
-             <span onclick="openModal('helpModal'); playSfx('click')" class="text-white/70 font-black text-[9px] cursor-pointer hover:text-white transition">HOW TO PLAY</span>
-             <span onclick="openModal('newsModal'); playSfx('click')" class="text-white/70 font-black text-[9px] cursor-pointer hover:text-white transition">UPDATES</span>
+        <!-- Mobil Alt Bağlantılar & Telif (Kaydırmanın En Altında) -->
+        <div class="flex flex-col items-center gap-2.5 w-full mt-5 mb-4 pb-14 lg:pb-2">
+            <div class="flex items-center justify-center gap-4 text-white/70 font-black text-[11px]">
+                <span onclick="openModal('helpModal'); playSfx('click')" class="cursor-pointer hover:text-white transition">HOW TO PLAY</span>
+                <span class="text-white/30">•</span>
+                <span onclick="openModal('newsModal'); playSfx('click')" class="cursor-pointer hover:text-white transition">UPDATES</span>
+            </div>
+            <div class="flex items-center justify-center gap-3 text-white/50 font-bold text-[10px]">
+                <a href="privacy.html" class="hover:text-white transition">Privacy Policy</a>
+                <span class="text-white/20">•</span>
+                <a href="terms.html" class="hover:text-white transition">Terms</a>
+                <span class="text-white/20">•</span>
+                <a href="contact.html" class="hover:text-white transition">Contact</a>
+            </div>
+            <span class="text-white/30 text-[9px] font-bold">ForestBrawl.io · All Rights Reserved</span>
         </div>
     </main>
+
+    <!-- Mobil Alt Dock (iPhone & Android Floating Bottom Bar) -->
+    <nav id="mobile-bottom-dock" class="flex lg:hidden items-center justify-around" aria-label="Mobil Hızlı Gezinme">
+        <button type="button" onclick="openModal('challengesModal'); updateChallengeProgress(); playSfx('click')" class="dock-btn" title="Görevler">
+            <i class="fa-solid fa-star text-amber-300"></i>
+            <span>GÖREV</span>
+        </button>
+        <button type="button" onclick="openModal('dailyRewardModal'); updateDailyRewardPanel(); playSfx('click')" class="dock-btn" title="Günlük Ödül">
+            <i class="fa-solid fa-gift text-yellow-400"></i>
+            <span>ÖDÜL</span>
+        </button>
+        <button type="button" onclick="openModal('leadersModal'); loadLeaderboard(); playSfx('click')" class="dock-btn" title="Sıralama">
+            <i class="fa-solid fa-trophy text-amber-400"></i>
+            <span>SIRA</span>
+        </button>
+        <button type="button" onclick="openModal('partyModal'); playSfx('click')" class="dock-btn" title="Parti Kur / Katıl">
+            <i class="fa-solid fa-users text-[#79D138]"></i>
+            <span>PARTİ</span>
+        </button>
+        <button type="button" onclick="openTikTok()" class="dock-btn" title="TikTok">
+            <i class="fa-brands fa-tiktok text-[#00f2ea]"></i>
+            <span>TIKTOK</span>
+        </button>
+    </nav>
 
 
     <!-- ================== MODALLAR ================== -->
@@ -8881,38 +9036,27 @@
 
         function syncLandingEventWidgets() {
             const eventContainer = document.getElementById('left-events-container');
-            const starterBonus = document.querySelector('#main-menu > div.w-full.mt-3.mb-3');
-            if (!eventContainer || !starterBonus) return;
+            if (!eventContainer) return;
 
-            const portrait = window.matchMedia?.('(orientation: portrait)').matches || window.innerWidth <= 640;
-            const starterRect = starterBonus.getBoundingClientRect();
-            eventContainer.style.position = 'fixed';
-            eventContainer.style.zIndex = '35';
-
-            if (portrait) {
-                const eventWidth = Math.min(window.innerWidth - 16, 420);
-                const eventTop = Math.min(starterRect.bottom + 8, window.innerHeight - 176);
-                eventContainer.style.left = `${Math.max(8, (window.innerWidth - eventWidth) / 2)}px`;
-                eventContainer.style.right = 'auto';
-                eventContainer.style.top = `${Math.max(8, eventTop)}px`;
-                eventContainer.style.width = `${eventWidth}px`;
-                eventContainer.style.maxWidth = 'none';
-                eventContainer.style.transform = 'none';
-                eventContainer.style.flexDirection = 'row';
-                eventContainer.style.alignItems = 'stretch';
-                eventContainer.style.gap = '8px';
+            const isPortrait = window.matchMedia && window.matchMedia('(orientation: portrait)').matches;
+            if (isPortrait) {
+                eventContainer.style.display = 'none';
                 return;
             }
 
-            eventContainer.style.left = 'auto';
-            eventContainer.style.right = 'clamp(12px, 3vw, 42px)';
-            eventContainer.style.top = 'clamp(150px, 30vh, 300px)';
-            eventContainer.style.width = '240px';
-            eventContainer.style.maxWidth = '240px';
-            eventContainer.style.transform = 'none';
-            eventContainer.style.flexDirection = 'column';
-            eventContainer.style.alignItems = 'stretch';
-            eventContainer.style.gap = '4px';
+            eventContainer.style.display = '';
+            eventContainer.style.position = '';
+            eventContainer.style.zIndex = '';
+            eventContainer.style.left = '';
+            eventContainer.style.right = '';
+            eventContainer.style.top = '';
+            eventContainer.style.bottom = '';
+            eventContainer.style.width = '';
+            eventContainer.style.maxWidth = '';
+            eventContainer.style.transform = '';
+            eventContainer.style.flexDirection = '';
+            eventContainer.style.alignItems = '';
+            eventContainer.style.gap = '';
         }
 
         async function loadMainMenuLayout() {

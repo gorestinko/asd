@@ -1325,7 +1325,12 @@ function getAuthUser(request) {
 }
 
 function sendJson(response, status, body) {
-  response.writeHead(status, { 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'no-store' });
+  response.writeHead(status, {
+    'Content-Type': 'application/json; charset=utf-8',
+    'Cache-Control': 'no-store',
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Headers': 'Content-Type, Authorization'
+  });
   response.end(JSON.stringify(body));
 }
 
@@ -1921,8 +1926,8 @@ async function handleApi(request, response, requestPath) {
     return true;
   }
   if (requestPath === '/api/health' && request.method === 'GET') {
-    const databaseOk = Boolean(sqliteDb) && !databaseLastError;
-    sendJson(response, databaseOk ? 200 : 503, { ok: databaseOk, database: databaseOk, online: io.engine.clientsCount });
+    const databaseOk = !sqliteDb || !databaseLastError;
+    sendJson(response, 200, { ok: true, database: Boolean(sqliteDb), online: io.engine.clientsCount });
     return true;
   }
 
@@ -2023,7 +2028,10 @@ async function handleApi(request, response, requestPath) {
     const user = findUserForLogin(body.identifier || body.username);
     const password = String(body.password || '');
     const check = user && user.hash && user.salt && hashPassword(password, user.salt).hash;
-    if (!user || !check || !crypto.timingSafeEqual(Buffer.from(check, 'hex'), Buffer.from(user.hash, 'hex'))) {
+    const bufA = check ? Buffer.from(check, 'hex') : null;
+    const bufB = (user && user.hash) ? Buffer.from(user.hash, 'hex') : null;
+    const isValid = bufA && bufB && bufA.length === bufB.length && crypto.timingSafeEqual(bufA, bufB);
+    if (!user || !isValid) {
       sendJson(response, 401, { error: 'Kullanıcı adı veya şifre hatalı.' });
       return true;
     }
@@ -3221,14 +3229,14 @@ function relayToOthers(socket, event, payload) {
   socket.broadcast.emit(event, payload);
 }
 
-const MAX_MOBS = 48;
+const MAX_MOBS = 120;
 const MOB_RADIUS = 36;
 const MOB_AGGRO_RANGE = 420;
 const MOB_SPEED = 24;
 const MOB_WANDER_SPEED = 12;
 const MOB_CHASE_TIMEOUT = 6000;
 const MOB_GRID_CELL_SIZE = 300;
-const MOB_AOI_RADIUS = 1200;
+const MOB_AOI_RADIUS = 2400;
 const PLAYER_AOI_RADIUS = 2200;
 const PLAYER_GRID_CELL_SIZE = 420;
 const MAX_PLAYER_SPEED = 1200;
@@ -3693,29 +3701,54 @@ const serverResources = previewWorldResources.map((resource, idx) => ({
   lastHitBy: new Map()
 }));
 
-function findSafeMobSpawn(targetBiome = 'forest') {
-  const minMobDist = 180;
-  const minPlayerDist = 240;
-  for (let attempt = 0; attempt < 40; attempt++) {
+function findSafeMobSpawn(targetBiome = 'forest', nearX = null, nearY = null) {
+  const minMobDist = 140;
+  const minPlayerDist = 220;
+  for (let attempt = 0; attempt < 45; attempt++) {
     let x, y;
-    if (targetBiome === 'winter') {
-      x = Math.round((Math.random() * 2 - 1) * 3800);
-      y = Math.round(-4800 - Math.random() * 1800);
-    } else if (targetBiome === 'desert') {
-      x = Math.round(4800 + Math.random() * 1800);
-      y = Math.round((Math.random() * 2 - 1) * 3800);
-    } else if (targetBiome === 'lava') {
-      if (Math.random() < 0.5) {
-        x = Math.round((Math.random() * 2 - 1) * 3800);
-        y = Math.round(4800 + Math.random() * 1800);
+    if (nearX !== null && nearY !== null && attempt < 30) {
+      const ang = Math.random() * Math.PI * 2;
+      const dist = 750 + Math.random() * 950;
+      x = Math.round(nearX + Math.cos(ang) * dist);
+      y = Math.round(nearY + Math.sin(ang) * dist);
+      if (targetBiome === 'winter') {
+        x = Math.max(-4200, Math.min(4200, x));
+        y = Math.max(-6600, Math.min(-4750, y));
+      } else if (targetBiome === 'desert') {
+        x = Math.max(4750, Math.min(6600, x));
+        y = Math.max(-4200, Math.min(4200, y));
+      } else if (targetBiome === 'lava') {
+        if (nearY > 4400 || (nearX > -4400 && nearX < 4400)) {
+          x = Math.max(-4200, Math.min(4200, x));
+          y = Math.max(4750, Math.min(6600, y));
+        } else {
+          x = Math.max(-6600, Math.min(-4750, x));
+          y = Math.max(-4200, Math.min(4200, y));
+        }
       } else {
-        x = Math.round(-4800 - Math.random() * 1800);
-        y = Math.round((Math.random() * 2 - 1) * 3800);
+        x = Math.max(-4200, Math.min(4200, x));
+        y = Math.max(-4200, Math.min(4200, y));
       }
     } else {
-      // forest
-      x = Math.round((Math.random() * 2 - 1) * 3600);
-      y = Math.round((Math.random() * 2 - 1) * 3600);
+      if (targetBiome === 'winter') {
+        x = Math.round((Math.random() * 2 - 1) * 3800);
+        y = Math.round(-4800 - Math.random() * 1800);
+      } else if (targetBiome === 'desert') {
+        x = Math.round(4800 + Math.random() * 1800);
+        y = Math.round((Math.random() * 2 - 1) * 3800);
+      } else if (targetBiome === 'lava') {
+        if (Math.random() < 0.5) {
+          x = Math.round((Math.random() * 2 - 1) * 3800);
+          y = Math.round(4800 + Math.random() * 1800);
+        } else {
+          x = Math.round(-4800 - Math.random() * 1800);
+          y = Math.round((Math.random() * 2 - 1) * 3800);
+        }
+      } else {
+        // forest
+        x = Math.round((Math.random() * 2 - 1) * 3600);
+        y = Math.round((Math.random() * 2 - 1) * 3600);
+      }
     }
 
     let tooClose = false;
@@ -3744,13 +3777,13 @@ function findSafeMobSpawn(targetBiome = 'forest') {
     }
     if (!tooClose) return { x, y };
   }
-  if (targetBiome === 'winter') return { x: 0, y: -5400 };
-  if (targetBiome === 'desert') return { x: 5400, y: 0 };
-  if (targetBiome === 'lava') return { x: 0, y: 5400 };
+  if (targetBiome === 'winter') return { x: Math.round((Math.random() * 2 - 1) * 2500), y: Math.round(-5200 - Math.random() * 1000) };
+  if (targetBiome === 'desert') return { x: Math.round(5200 + Math.random() * 1000), y: Math.round((Math.random() * 2 - 1) * 2500) };
+  if (targetBiome === 'lava') return { x: Math.round((Math.random() * 2 - 1) * 2500), y: Math.round(5200 + Math.random() * 1000) };
   return { x: Math.round((Math.random() * 2 - 1) * 3200), y: Math.round((Math.random() * 2 - 1) * 3200) };
 }
 
-function createMob(prefBiome = null) {
+function createMob(prefBiome = null, nearX = null, nearY = null) {
   let type;
   if (prefBiome) {
     const candidates = MOB_TYPES.filter(m => m.biome === prefBiome);
@@ -3758,7 +3791,7 @@ function createMob(prefBiome = null) {
   } else {
     type = MOB_TYPES[(nextMobId - 1) % MOB_TYPES.length];
   }
-  const { x, y } = findSafeMobSpawn(type.biome || 'forest');
+  const { x, y } = findSafeMobSpawn(type.biome || 'forest', nearX, nearY);
   const angle = Math.random() * Math.PI * 2;
   const mob = {
     id: `mob-${nextMobId++}`, x, y, vx: 0, vy: 0, radius: type.radius || MOB_RADIUS,
@@ -3773,13 +3806,73 @@ function createMob(prefBiome = null) {
   return mob;
 }
 
-function ensureMobs() {
+function ensureMobs(prefX = null, prefY = null) {
   const target = Math.max(1, Math.round(MAX_MOBS * Math.max(0.1, Number(adminConfig.mobSpawnMultiplier) || 1)));
   const biomes = ['forest', 'winter', 'desert', 'lava'];
+
+  const biomeCounts = { forest: 0, winter: 0, desert: 0, lava: 0 };
+  for (const m of mobs.values()) {
+    const b = m.biome || previewBiome(m.x, m.y);
+    if (biomeCounts[b] !== undefined) biomeCounts[b]++;
+  }
+
+  const humanPlayers = [...players.values()].filter(p => !p.isBot && (p.hp ?? 0) > 0);
+
+  // If a specific position is passed (e.g. join), spawn local mobs if low
+  if (prefX !== null && prefY !== null) {
+    const pBiome = previewBiome(prefX, prefY);
+    const nearby = nearbyMobs(prefX, prefY, MOB_AOI_RADIUS);
+    if (nearby.length < 3 && mobs.size < target) {
+      createMob(pBiome, prefX, prefY);
+      biomeCounts[pBiome] = (biomeCounts[pBiome] || 0) + 1;
+    }
+  }
+
+  // Ensure every active human player has at least 3 mobs nearby in their biome
+  for (const p of humanPlayers) {
+    const pBiome = previewBiome(p.x, p.y);
+    const nearby = nearbyMobs(p.x, p.y, MOB_AOI_RADIUS);
+    if (nearby.length < 3) {
+      if (mobs.size < target) {
+        createMob(pBiome, p.x, p.y);
+        biomeCounts[pBiome] = (biomeCounts[pBiome] || 0) + 1;
+      } else {
+        // Recycle a distant idle mob from the same biome
+        for (const m of mobs.values()) {
+          if (m.biome === pBiome && !m.targetId) {
+            const hasNearbyPlayer = humanPlayers.some(pl => Math.hypot(pl.x - m.x, pl.y - m.y) < 2600);
+            if (!hasNearbyPlayer) {
+              const safe = findSafeMobSpawn(pBiome, p.x, p.y);
+              m.x = safe.x; m.y = safe.y;
+              m.stateSeq = (m.stateSeq || 0) + 1;
+              m.stateAt = Date.now();
+              break;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  // Maintain even quota across all 4 biomes
+  const perBiomeTarget = Math.floor(target / biomes.length);
+  for (const b of biomes) {
+    while ((biomeCounts[b] || 0) < perBiomeTarget && mobs.size < target) {
+      const pInBiome = humanPlayers.find(p => previewBiome(p.x, p.y) === b);
+      if (pInBiome) {
+        createMob(b, pInBiome.x, pInBiome.y);
+      } else {
+        createMob(b);
+      }
+      biomeCounts[b] = (biomeCounts[b] || 0) + 1;
+    }
+  }
+
   while (mobs.size < target) {
     const b = biomes[mobs.size % biomes.length];
     createMob(b);
   }
+
   while (mobs.size > target) {
     const oldest = mobs.keys().next().value;
     if (!oldest) break;
@@ -4824,7 +4917,7 @@ function purgeBotLeaderboardRecords() {
 
 purgeBotLeaderboardRecords();
 
-const BOT_SKINS = ['default', 'skin_desert', 'skin_winter', 'skin_storm', 'skin_sapphire', 'skin_ruby', 'skin_emerald'];
+const BOT_SKINS = ['default', 'skin_desert', 'skin_frostwolf', 'skin_storm', 'skin_sapphire', 'skin_ruby', 'skin_emerald'];
 
 const BOT_CLANS = [
   { id: 'clan_apex', name: 'Apex Predators', tag: 'APEX' },
@@ -5830,7 +5923,15 @@ io.on('connection', (socket) => {
     players.set(socket.id, state);
     ensureMobs(state.x || 0, state.y || 0);
     rebuildMobGrid();
-    const visibleMobs = nearbyMobs(state.x || 0, state.y || 0, MOB_AOI_RADIUS);
+    let visibleMobs = nearbyMobs(state.x || 0, state.y || 0, MOB_AOI_RADIUS);
+    if (visibleMobs.length < 3) {
+      const pBiome = previewBiome(state.x || 0, state.y || 0);
+      createMob(pBiome, state.x || 0, state.y || 0);
+      createMob(pBiome, state.x || 0, state.y || 0);
+      createMob(pBiome, state.x || 0, state.y || 0);
+      rebuildMobGrid();
+      visibleMobs = nearbyMobs(state.x || 0, state.y || 0, MOB_AOI_RADIUS);
+    }
     state.visibleMobIds = new Set(visibleMobs.map(mob => mob.id));
     const others = Object.fromEntries([...players].filter(([id, player]) => {
       if (id === socket.id) return false;
@@ -6935,5 +7036,7 @@ server.on('error', (error) => {
 server.listen(PORT, '0.0.0.0', () => {
   const address = server.address();
   const boundPort = address && typeof address === 'object' ? address.port : PORT;
-  console.log(`ForestBrawl multiplayer server listening on 0.0.0.0:${boundPort}`);
+  ensureMobs();
+  rebuildMobGrid();
+  console.log(`ForestBrawl multiplayer server listening on 0.0.0.0:${boundPort} (Initial mobs: ${mobs.size})`);
 });

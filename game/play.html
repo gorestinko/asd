@@ -1760,113 +1760,6 @@ html.touch-device .joy-zone { display:flex !important; pointer-events:auto !impo
   align-items:center;
 }
 
-/* ===== PLAY SCREEN EVENT STACK ===== */
-#play-bottom-event-stack{
-  position:fixed;
-  left:50%;
-  bottom:calc(78px + env(safe-area-inset-bottom));
-  transform:translateX(-50%);
-  z-index:820;
-  display:grid;
-  grid-template-columns:repeat(2, minmax(0, 1fr));
-  gap:8px;
-  width:min(420px, calc(100vw - 18px));
-  pointer-events:none;
-}
-.play-event-card{
-  position:relative;
-  display:flex;
-  align-items:center;
-  gap:8px;
-  min-width:0;
-  padding:8px 10px 8px 8px;
-  border-radius:16px;
-  border:1px solid rgba(255,255,255,0.08);
-  background:linear-gradient(135deg, rgba(10,14,22,0.72), rgba(18,20,28,0.8));
-  backdrop-filter:blur(12px);
-  -webkit-backdrop-filter:blur(12px);
-  box-shadow:0 10px 24px rgba(0,0,0,0.28), inset 0 1px 0 rgba(255,255,255,0.06);
-  pointer-events:auto;
-  overflow:hidden;
-}
-.play-event-card::before{
-  content:"";
-  position:absolute;
-  inset:0;
-  background:linear-gradient(135deg, rgba(255,255,255,0.06), transparent 35%);
-  pointer-events:none;
-}
-.play-event-card[data-tone="invite"]{
-  border-color:rgba(255, 204, 98, 0.45);
-  background:linear-gradient(135deg, rgba(66, 40, 7, 0.78), rgba(20, 16, 11, 0.82));
-}
-.play-event-card[data-tone="creator"]{
-  border-color:rgba(192, 132, 252, 0.45);
-  background:linear-gradient(135deg, rgba(54, 26, 68, 0.8), rgba(17, 12, 22, 0.85));
-}
-.play-event-icon{
-  position:relative;
-  z-index:1;
-  width:30px;
-  height:30px;
-  display:grid;
-  place-items:center;
-  border-radius:10px;
-  font-size:15px;
-  flex-shrink:0;
-  background:rgba(255,255,255,0.08);
-  border:1px solid rgba(255,255,255,0.1);
-}
-.play-event-card[data-tone="invite"] .play-event-icon{background:rgba(245, 158, 11, 0.18); box-shadow:inset 0 0 18px rgba(251, 191, 36, 0.18);}
-.play-event-card[data-tone="creator"] .play-event-icon{background:rgba(168, 85, 247, 0.18); box-shadow:inset 0 0 18px rgba(192, 132, 252, 0.18);}
-.play-event-text{
-  position:relative;
-  z-index:1;
-  display:flex;
-  flex-direction:column;
-  min-width:0;
-  flex:1;
-}
-.play-event-kicker{
-  font-size:8px;
-  font-weight:900;
-  letter-spacing:1.1px;
-  text-transform:uppercase;
-  color:rgba(255,255,255,0.6);
-}
-.play-event-label{
-  font-size:11px;
-  font-weight:900;
-  line-height:1.1;
-  color:#fff;
-  white-space:nowrap;
-  overflow:hidden;
-  text-overflow:ellipsis;
-}
-.play-event-action{
-  position:relative;
-  z-index:1;
-  border:none;
-  border-radius:10px;
-  padding:7px 9px;
-  font:800 10px/1 'Nunito',sans-serif;
-  letter-spacing:0.2px;
-  cursor:pointer;
-  color:#fff;
-  background:linear-gradient(135deg, rgba(255, 191, 59, 0.28), rgba(255, 124, 0, 0.18));
-  border:1px solid rgba(255,255,255,0.1);
-  transition:transform 0.15s ease, filter 0.15s ease, box-shadow 0.15s ease;
-}
-.play-event-card[data-tone="invite"] .play-event-action{
-  background:linear-gradient(135deg, rgba(255, 191, 59, 0.3), rgba(255, 120, 0, 0.22));
-  box-shadow:0 6px 14px rgba(251, 146, 60, 0.22);
-}
-.play-event-card[data-tone="creator"] .play-event-action{
-  background:linear-gradient(135deg, rgba(192, 132, 252, 0.34), rgba(168, 85, 247, 0.24));
-  box-shadow:0 6px 14px rgba(192, 132, 252, 0.18);
-}
-.play-event-action:hover{ transform:translateY(-1px); filter:brightness(1.08); }
-.play-event-action:active{ transform:scale(0.96); }
 @media(max-width:480px){
   #invite-hud-btn{
     top:max(10px, env(safe-area-inset-top));
@@ -1875,22 +1768,10 @@ html.touch-device .joy-zone { display:flex !important; pointer-events:auto !impo
     font-size:10px;
     gap:4px;
   }
-  #play-bottom-event-stack{
-    bottom:calc(72px + env(safe-area-inset-bottom));
-    width:min(94vw, 390px);
-    gap:6px;
-  }
-  .play-event-card{ padding:7px 8px 7px 7px; border-radius:14px; }
-  .play-event-label{ font-size:10px; }
-  .play-event-action{ padding:6px 7px; font-size:9px; }
 }
 @media(max-width:360px){
   #invite-hud-btn .invite-text{display:none;}
   #invite-hud-btn{padding:5px 8px;border-radius:10px;}
-  #play-bottom-event-stack{ width:calc(100vw - 12px); }
-  .play-event-kicker{ letter-spacing:0.8px; }
-  .play-event-label{ font-size:9px; }
-  .play-event-card{ gap:6px; }
 }
 @media(max-height:500px){
   #invite-hud-btn{
@@ -1899,15 +1780,6 @@ html.touch-device .joy-zone { display:flex !important; pointer-events:auto !impo
     padding:4px 8px;
     font-size:10px;
   }
-  #play-bottom-event-stack{
-    bottom:calc(10px + env(safe-area-inset-bottom));
-    width:min(500px, calc(100vw - 12px));
-    gap:6px;
-  }
-  .play-event-card{ padding:6px 8px; }
-  .play-event-label{ font-size:9.5px; }
-  .play-event-kicker{ font-size:7px; }
-  .play-event-action{ padding:6px 7px; }
 }
 
 /* Death screen extra styles */
@@ -4055,21 +3927,7 @@ html,body{width:100vw !important;max-width:100vw !important;height:var(--app-hei
   }
 }
 
-/* Final mobile stacking contract: event cards stay above the bottom HUD. */
-#play-bottom-event-stack {
-  bottom:calc(104px + env(safe-area-inset-bottom,0px));
-}
-@media (max-width:600px) and (hover:none) and (orientation:portrait) {
-  #play-bottom-event-stack {
-    bottom:calc(96px + env(safe-area-inset-bottom,0px));
-  }
-}
-@media (max-height:500px) and (orientation:landscape) {
-  #play-bottom-event-stack {
-    bottom:calc(52px + env(safe-area-inset-bottom,0px));
-    width:min(520px,calc(100vw - 18px));
-  }
-}
+
 </style>
 <script>
 function drawSkinEyesOverlay(c, R, sk, fl) {
@@ -4955,7 +4813,7 @@ const _isMobile = ('ontouchstart' in window || navigator.maxTouchPoints > 0) &&
   (window.innerWidth < 1200 || /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent) || (window.matchMedia && window.matchMedia('(pointer: coarse)').matches));
 const _lowPowerDevice = (navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 4) ||
   (navigator.deviceMemory && navigator.deviceMemory <= 4) || /Android\s+[1-7]|iPhone|iPad/i.test(navigator.userAgent);
-let ZOOM = _isMobile ? 1.00 : 1.00;
+let ZOOM = _isMobile ? 0.95 : 0.82;
 let camX = 0, camY = 0, _camReady = false;
 
 const WORLD = 7200;
@@ -5076,10 +4934,7 @@ function _preloadStaticSprites() {
       jobs.push(() => _loadSprite(`weapons/${kind}-tier-${tier}.png`, 'weapon', 'normal'));
     }
   }
-  jobs.push(
-    () => _loadSprite('mobs/spider-46.png', 'mob', 'normal'),
-    () => _loadSprite('mobs/elephant-68.png', 'mob', 'normal')
-  );
+
 
   let index = 0;
   const loadChunk = (deadline) => {
@@ -5107,6 +4962,11 @@ function _mobSprite(shape, radius) {
   return nearest;
 }
 function _playerSprite(skin) {
+  if (!skin) return null;
+  const s = String(skin);
+  if (!_CUSTOM_SKIN_ASSETS.has(s) && (s.startsWith('skin_') || (typeof GENERATED_SKIN_STYLES !== 'undefined' && GENERATED_SKIN_STYLES[s]))) {
+    return null;
+  }
   const key = _skinAssetPath(skin);
   let entry = _PLAYER_SPRITES.get(key);
   if (!entry) entry = _loadSprite(key, 'player', 'normal');
@@ -5271,7 +5131,33 @@ window.addEventListener('wheel', (e) => {
     return;
   }
   const delta = e.deltaY < 0 ? 0.04 : -0.04;
-  _userZoomMultiplier = Math.max(0.88, Math.min(1.22, _userZoomMultiplier + delta));
+  _userZoomMultiplier = Math.max(0.75, Math.min(1.35, _userZoomMultiplier + delta));
+}, { passive: true });
+
+// Mobile 2-finger pinch zoom support
+let _pinchStartDist = 0;
+let _pinchStartZoom = 1.0;
+window.addEventListener('touchstart', (e) => {
+  if (e.touches && e.touches.length === 2) {
+    const t0 = e.touches[0], t1 = e.touches[1];
+    _pinchStartDist = Math.hypot(t0.clientX - t1.clientX, t0.clientY - t1.clientY);
+    _pinchStartZoom = _userZoomMultiplier;
+  }
+}, { passive: true });
+
+window.addEventListener('touchmove', (e) => {
+  if (e.touches && e.touches.length === 2 && _pinchStartDist > 10) {
+    const t0 = e.touches[0], t1 = e.touches[1];
+    const curDist = Math.hypot(t0.clientX - t1.clientX, t0.clientY - t1.clientY);
+    const scale = curDist / _pinchStartDist;
+    _userZoomMultiplier = Math.max(0.75, Math.min(1.35, _pinchStartZoom * scale));
+  }
+}, { passive: true });
+
+window.addEventListener('touchend', (e) => {
+  if (!e.touches || e.touches.length < 2) {
+    _pinchStartDist = 0;
+  }
 }, { passive: true });
 
 function _trackQuestProgress(key, amount = 1) {
@@ -19646,10 +19532,10 @@ function update(timestamp = 0) {
     camY += (_camTargetY - canvas.height/2 - camY) * _camFactor;
   }
 
-  // ── PC & Mobil Kamera Yakınlığı (mobilde oyuncudan daha uzakta, daha rahat çerçeve) ──
-  const _baseTarget = _onTrain ? (_isMobile ? 0.56 : 0.62) : (_isMobile ? 0.50 : 0.48);
-  const _zoomTarget = Math.max(0.46, Math.min(0.78, _baseTarget * _userZoomMultiplier));
-  ZOOM += (_zoomTarget - ZOOM) * 0.065;
+  // ── PC & Mobil Kamera Yakınlığı (yakın kamera, net görüş; otomatik uzaklaşma engellendi) ──
+  const _baseTarget = _onTrain ? (_isMobile ? 0.88 : 0.75) : (_isMobile ? 0.95 : 0.82);
+  const _zoomTarget = Math.max(0.65, Math.min(1.35, _baseTarget * _userZoomMultiplier));
+  ZOOM += (_zoomTarget - ZOOM) * 0.08;
 
   // ── Kamera Sınır Kelepçesi: Ekran dışı / boşluk asla görünmez ──
   const _hvw = (canvas.width / 2) / (ZOOM || 0.78);
@@ -20957,16 +20843,17 @@ function initMultiplayer() {
     if (mobs && Array.isArray(mobs)) {
       enemies.length = 0;
       _serverBossId = null; _serverBossName = '';
+      if (typeof _mobVisibilityAt !== 'undefined' && _mobVisibilityAt.clear) _mobVisibilityAt.clear();
       for (const m of mobs) {
         if (!isActiveMobShape(m.shape)) continue;
         enemies.push({ _netId: m.id, x: m.x, y: m.y, _targetX: m.x, _targetY: m.y,
           vx: m.vx||0, vy: m.vy||0,
-          hp: m.hp, maxHp: m.maxHp||m.hp, radius: m.radius,
-          color: m.color, outline: m.outline||'#333', shape: m.shape||'goblin',
-          eyes: m.eyes||'#ffee00', hitFlash: m.hitFlash||0, typeName: m.typeName||'Düşman',
-          dmg: m.dmg||10, speed: 0, xpReward: m.xpReward||25, goldReward: m.goldReward||5,
+          hp: m.hp, maxHp: m.maxHp||m.hp, radius: m.radius || 46,
+          color: m.color || '#6b4932', outline: m.outline||'#28170d', shape: m.shape||'wolf',
+          eyes: m.eyes||'#ffcc66', hitFlash: m.hitFlash||0, typeName: m.typeName||'🐺 Kurt',
+          dmg: m.dmg||28, speed: 0, xpReward: m.xpReward||25, goldReward: m.goldReward||5,
           provoked: true, lastHit: 0, lastBuildHit: 0, lastSpikeHit: 0, lastResHit: 0, lastHitSwingId: -1,
-          angle: 0, _stateSeq: m.seq || 0, isBoss: m.isBoss||false });
+          angle: m.angle || 0, _stateSeq: m.seq || 0, isBoss: m.isBoss||false });
         if (m.isBoss && !_serverBossId) {
           _serverBossId = m.id;
           _serverBossName = m.typeName || '👑 Boss';
@@ -21954,34 +21841,47 @@ function initMultiplayer() {
     return true;
   }
 
-  // ── New mob spawned after we joined — full visual data ────────────────
+  // ── Mob despawn ──────────────────────────────────────────────
   _socket.on('mob_despawn', (m) => {
     if (!m || !m.id) return;
-    const despawnAt = Number(m.ts) || Date.now();
-    if (despawnAt < (_mobVisibilityAt.get(m.id) || 0)) return;
-    _mobVisibilityAt.set(m.id, despawnAt);
+    _mobVisibilityAt.delete(m.id);
     const idx = enemies.findIndex(en => en._netId === m.id);
     if (idx !== -1) enemies.splice(idx, 1);
     if (m.id === _serverBossId) _hideServerBossBar();
   });
 
+  // ── Mob spawn from server ─────────────────────────────────────
   _socket.on('mob_spawn', (m) => {
     if (!m || !m.id || !isActiveMobShape(m.shape)) return;
     const now = Date.now();
-    const spawnAt = Number(m.ts) || now;
-    if (spawnAt < (_mobVisibilityAt.get(m.id) || 0)) return;
-    _mobVisibilityAt.set(m.id, spawnAt);
+    _mobVisibilityAt.delete(m.id);
     const already = enemies.find(en => en._netId === m.id);
-    if (already) return;
-    enemies.push({ _netId: m.id, x: m.x, y: m.y, _targetX: m.x, _targetY: m.y,
+    if (already) {
+      already.x = m.x; already.y = m.y;
+      already._targetX = m.x; already._targetY = m.y;
+      already.vx = m.vx || 0; already.vy = m.vy || 0;
+      already.hp = m.hp; already.maxHp = m.maxHp || m.hp;
+      if (m.color) already.color = m.color;
+      if (m.outline) already.outline = m.outline;
+      if (m.shape) already.shape = m.shape;
+      if (m.eyes) already.eyes = m.eyes;
+      if (m.radius) already.radius = m.radius;
+      if (m.typeName) already.typeName = m.typeName;
+      already.angle = m.angle || 0;
+      already._lastSeen = now;
+      return;
+    }
+    enemies.push({
+      _netId: m.id, x: m.x, y: m.y, _targetX: m.x, _targetY: m.y,
       vx: m.vx||0, vy: m.vy||0,
-      hp: m.hp, maxHp: m.maxHp||m.hp, radius: m.radius||36,
-      color: m.color||'#4a7a28', outline: m.outline||'#1a3a08',
-      shape: m.shape||'goblin', eyes: m.eyes||'#ffee00',
-      hitFlash: 0, typeName: m.typeName||'Düşman',
-      dmg: m.dmg||10, speed: 0, xpReward: m.xpReward||25, goldReward: m.goldReward||5,
+      hp: m.hp, maxHp: m.maxHp||m.hp, radius: m.radius||46,
+      color: m.color||'#6b4932', outline: m.outline||'#28170d',
+      shape: m.shape||'wolf', eyes: m.eyes||'#ffcc66',
+      hitFlash: 0, typeName: m.typeName||'🐺 Kurt',
+      dmg: m.dmg||28, speed: 0, xpReward: m.xpReward||50, goldReward: m.goldReward||20,
       provoked: true, lastHit: 0, lastBuildHit: 0, lastSpikeHit: 0, lastResHit: 0, lastHitSwingId: -1,
-      angle: 0, _stateSeq: m.seq || 0, _lastSeen: now, isBoss: m.isBoss||false });
+      angle: m.angle || 0, _stateSeq: m.seq || 0, _lastSeen: now, isBoss: m.isBoss||false
+    });
     // Boss bar: show when a server boss mob spawns
     if (m.isBoss && !_serverBossId) {
       _serverBossId = m.id;
@@ -21996,15 +21896,11 @@ function initMultiplayer() {
     // PERF: reuse module-level map — was new Map() every 50ms (20Hz GC pressure eliminated)
     _enemyLocalMap.clear();
     for (const e of enemies) { if (e._netId) _enemyLocalMap.set(e._netId, e); }
-    // Update existing or add new — NEVER remove mobs that aren't in this partial update.
-    // Partial updates only include CHANGED mobs; stationary mobs are omitted intentionally.
-    // Removal only happens via mob_dead event or periodic mob_ids full sync.
     const now = Date.now();
     for (const m of mobs) {
       if (!isActiveMobShape(m.shape)) continue;
       const ex = _enemyLocalMap.get(m.id);
       if (ex) {
-        if (m.ts <= (_mobVisibilityAt.get(m.id) || 0)) continue;
         if (!_acceptMobSequence(ex, m.seq, m.ts)) continue;
         ex._targetX = m.x; ex._targetY = m.y;
         ex.vx = m.vx||0; ex.vy = m.vy||0;
@@ -22014,16 +21910,25 @@ function initMultiplayer() {
         if (m.angle != null) ex.angle = m.angle;
         else if (m.vx !== 0 || m.vy !== 0) ex.angle = Math.atan2(m.vy, m.vx);
         ex._lastSeen = now;
-        if (!ex.color && m.color) { ex.color = m.color; ex.outline = m.outline; ex.shape = m.shape||'wolf'; ex.eyes = m.eyes||'#ffee00'; ex.radius = m.radius||46; }
+        if (m.color) ex.color = m.color;
+        if (m.outline) ex.outline = m.outline;
+        if (m.shape) ex.shape = m.shape;
+        if (m.eyes) ex.eyes = m.eyes;
+        if (m.radius) ex.radius = m.radius;
+        if (m.typeName) ex.typeName = m.typeName;
       } else if (m.id) {
-        enemies.push({ _netId: m.id, x: m.x, y: m.y, _targetX: m.x, _targetY: m.y,
+        const newMob = {
+          _netId: m.id, x: m.x, y: m.y, _targetX: m.x, _targetY: m.y,
           vx: m.vx||0, vy: m.vy||0,
           hp: m.hp || 100, maxHp: m.maxHp||m.hp||100, radius: m.radius||46,
           color: m.color||'#6b4932', outline: m.outline||'#28170d', shape: m.shape||'wolf',
           eyes: m.eyes||'#ffcc66', hitFlash: m.hitFlash||0, typeName: m.typeName||'🐺 Kurt',
           dmg: m.dmg||28, speed: 0, xpReward: m.xpReward||50, goldReward: m.goldReward||20,
           provoked: true, lastHit: 0, lastBuildHit: 0, lastSpikeHit: 0, lastResHit: 0, lastHitSwingId: -1,
-          angle: m.angle||0, _stateSeq: m.seq || 0, _stateAt: m.ts || now, _lastSeen: now, isBoss: m.isBoss||false });
+          angle: m.angle||0, _stateSeq: m.seq || 0, _stateAt: m.ts || now, _lastSeen: now, isBoss: m.isBoss||false
+        };
+        enemies.push(newMob);
+        _enemyLocalMap.set(m.id, newMob);
         if (m.isBoss && !_serverBossId) {
           _serverBossId = m.id;
           _serverBossName = m.typeName || '👑 Boss';
@@ -24916,25 +24821,7 @@ setInterval(function(){
 <!-- ===== FRIEND INVITE HUD BUTTON ===== -->
 <button type="button" id="invite-hud-btn" onclick="window._inviteFriend&&window._inviteFriend()" title="Arkadaşını Oyuna Davet Et" aria-label="Arkadaş Davet Et"><span class="invite-icon">🔗</span><span class="invite-text">Davet Et</span></button>
 
-<div id="play-bottom-event-stack" aria-label="Oyun etkinlikleri">
-  <div class="play-event-card" data-tone="invite">
-    <div class="play-event-icon">🔥</div>
-    <div class="play-event-text">
-      <span class="play-event-kicker">Etkinlik</span>
-      <span class="play-event-label">Arkadaş Davet Et</span>
-    </div>
-    <button type="button" class="play-event-action" onclick="if(typeof playSfx==='function') playSfx('click'); if(window._inviteFriend) window._inviteFriend();">Davet</button>
-  </div>
 
-  <div class="play-event-card" data-tone="creator">
-    <div class="play-event-icon">🎬</div>
-    <div class="play-event-text">
-      <span class="play-event-kicker">Etkinlik</span>
-      <span class="play-event-label">İçerik Üretici</span>
-    </div>
-    <button type="button" class="play-event-action" onclick="if(typeof playSfx==='function') playSfx('click'); if(window.openCreatorEventModal){window.openCreatorEventModal();} else if(typeof showToast==='function'){showToast('İçerik üretici etkinliği ana menüde mevcut.', 2200, '#c084fc');}">Aç</button>
-  </div>
-</div>
 
 <script>
 // ================================================================
