@@ -20740,6 +20740,7 @@ function initMultiplayer() {
   // cleared a potentially stale timer, and the delay was never reset to 2 s on reconnect
   // unless the second handler ran first.
   let _pingTimer = null;
+  let _buildingsSyncTimer = null;
   _socket.on('connect', () => {
     clearTimeout(_connectionFallbackTimer);
     _mySocketId = _socket.id;
@@ -20753,6 +20754,8 @@ function initMultiplayer() {
     if (_fpsEl) { _fpsEl.style.display = ''; _fpsEl.textContent = '⚡ 60 FPS'; }
     if (_pingTimer) clearInterval(_pingTimer);
     _pingTimer = setInterval(() => { if (_connected && _socket) _socket.emit('ping_req', { t: performance.now() }); }, 1000);
+    if (_buildingsSyncTimer) clearInterval(_buildingsSyncTimer);
+    _buildingsSyncTimer = setInterval(() => { if (_connected && _socket) _socket.emit('buildings_sync'); }, 12000);
     _socket.emit('ping_req', { t: performance.now() });
     const _initAxeTier = (playerAcc && playerAcc.baltalar && playerAcc.baltalar.startsWith('ba_tier_')) ? Math.max(_wepTier(_axeXP), parseInt(playerAcc.baltalar.replace('ba_tier_', '')) || 0) : _wepTier(_axeXP);
     const _initSwordTier = (playerAcc && playerAcc.kiliclar && playerAcc.kiliclar.startsWith('ki_tier_')) ? Math.max(_wepTier(_swordXP), parseInt(playerAcc.kiliclar.replace('ki_tier_', '')) || 0) : _wepTier(_swordXP);
@@ -20787,6 +20790,7 @@ function initMultiplayer() {
     _serverMobAuthority = false;
     _otherPlayers.clear();
     if (_pingTimer) { clearInterval(_pingTimer); _pingTimer = null; }
+    if (_buildingsSyncTimer) { clearInterval(_buildingsSyncTimer); _buildingsSyncTimer = null; }
     if (_pingEl) { _pingEl.textContent = '🌐 ⚠️ bağlantı kesildi'; _pingEl.style.color = '#ff8888'; }
     if (reason !== 'io client disconnect') {
       _showRcOverlay();
@@ -21287,11 +21291,12 @@ function initMultiplayer() {
   });
 
   // ── Building limit reached — server refused placement ─────────────────────
-  _socket.on('build_limit_reached', () => {
+  _socket.on('build_limit_reached', (data = {}) => {
+    const targetId = data?.clientId || _lastPlacedClientId;
     showToast('⛔ Bina yerleştirilemedi (Limit veya yetersiz kaynak)', 3000, '#ff6644');
     // Remove the ghost building and refund resources optimistically spent
-    if (_lastPlacedClientId) {
-      const ghostB = _buildingsMap.get(_lastPlacedClientId);
+    if (targetId) {
+      const ghostB = _buildingsMap.get(targetId);
       if (ghostB) {
         const costs = { 3:[20,5], 4:[40,20], 5:[10,20], 6:[30,10], 7:[60,40], 8:[30,0], 9:[80,60], 10:[25,0] };
         const [cW, cS] = costs[ghostB.type] || [0, 0];
@@ -21300,9 +21305,9 @@ function initMultiplayer() {
         updateUI();
         const idx = buildings.indexOf(ghostB);
         if (idx !== -1) buildings.splice(idx, 1);
-        _buildingsMap.delete(_lastPlacedClientId);
+        _buildingsMap.delete(targetId);
       }
-      _lastPlacedClientId = null;
+      if (_lastPlacedClientId === targetId) _lastPlacedClientId = null;
     }
   });
 
@@ -21436,15 +21441,46 @@ function initMultiplayer() {
   // Merges without duplicating — safe to call at any time
   _socket.on('buildings_sync', ({ buildings: remoteBuildings }) => {
     if (!remoteBuildings || typeof remoteBuildings !== 'object') return;
+    const incomingKeys = new Set(Object.keys(remoteBuildings));
+    
+    // 1. Remove remote buildings that no longer exist on server (were destroyed)
+    for (let i = buildings.length - 1; i >= 0; i--) {
+      const b = buildings[i];
+      if (b._remote && b._netId && !incomingKeys.has(b._netId)) {
+        _buildingsMap.delete(b._netId);
+        if (b.type === 10) {
+          const ci = _campfires.indexOf(b);
+          if (ci >= 0) { _campfires[ci] = _campfires[_campfires.length - 1]; _campfires.pop(); }
+        }
+        buildings.splice(i, 1);
+      }
+    }
+
+    // 2. Add or update buildings from server
     Object.entries(remoteBuildings).forEach(([bid, b]) => {
       const ownerId = b.ownerId || b._ownerId;
-      if (ownerId === _mySocketId) return;
-      if (_buildingsMap.has(bid)) return; // O(1) — was buildings.find()
+      const isMine = ownerId === _mySocketId;
+      const existing = _buildingsMap.get(bid);
+      
+      if (existing) {
+        if (b.hp !== undefined) existing.hp = b.hp;
+        if (b.maxHp !== undefined) existing.maxHp = b.maxHp;
+        if (b.tier !== undefined && b.tier !== existing.tier) {
+          existing.tier = b.tier;
+          const _bTypeKeys = {3:'sp_',5:'bp_',6:'tr_',7:'tu_',8:'wa3_',9:'ca_',10:'cf_'};
+          const _bPfx = _bTypeKeys[existing.type];
+          if (_bPfx) { _bldSC.delete(_bPfx + existing.tier); }
+          if (existing.type === 4) { _wmOC.delete(existing.tier); }
+        }
+        return;
+      }
+      
       const _nb = {
         x: b.x, y: b.y, type: b.type, angle: b.angle,
         life: 0, hp: b.hp, maxHp: b.maxHp, tier: b.tier || 0,
         shake: 0, hitTimer: 0,
-        _netId: bid, _ownerId: ownerId, ownerClanId: b.ownerClanId || '', _remote: true, _spawnAnim: 0,
+        _netId: bid, _ownerId: ownerId, ownerClanId: b.ownerClanId || '',
+        _remote: !isMine, _spawnAnim: 0, _hpBarVisibleUntil: 0
       };
       buildings.push(_nb);
       _buildingsMap.set(bid, _nb);
@@ -22265,6 +22301,7 @@ function initMultiplayer() {
       _gdCachedCamY = camY;
     }
     floatingTexts.push({ x: player.x, y: player.y - 80, text: '🛡️ 3 Saniyelik Koruma!', alpha: 1, life: 100, color: '#44ddff', big: true });
+    if (_connected && _socket) _socket.emit('buildings_sync');
   });
 
   _socket.on('player_respawn', ({ id, state }) => {

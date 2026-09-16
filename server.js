@@ -42,7 +42,7 @@ const TRAP_MAX_HP = 240;
 const BUILD_COSTS = { 3: [20, 5, 0], 4: [40, 20, 0], 5: [10, 20, 0], 6: [30, 10, 0], 7: [60, 40, 0], 8: [30, 0, 0], 9: [80, 60, 0], 10: [25, 0, 0] };
 const BUILD_RADII = { 3: 34, 4: 44, 5: 22, 6: 78, 7: 32, 8: 24, 9: 52, 10: 30 };
 const BUILD_MAX_HP = { 3: 180, 4: 120, 5: 100, 6: 240, 7: 200, 8: 350, 9: 800, 10: 100 };
-const BUILD_ACTION_COOLDOWN = 700;
+const BUILD_ACTION_COOLDOWN = 50;
 const TRAP_CAPTURE_DEPTH = 4;
 
 function trapCaptureRadius(trap, targetRadius = 35) {
@@ -5184,13 +5184,13 @@ setInterval(() => {
           const oldSpikeId = bot.defSpikes.shift();
           if (buildings.has(oldSpikeId)) {
             buildings.delete(oldSpikeId);
-            broadcastBotEvent(bot, 'build_destroy', { id: oldSpikeId });
+            io.emit('build_destroy', { id: oldSpikeId });
           }
         }
         bot.defSpikes.push(bId);
         rebuildBuildingGrid();
         broadcastBotEvent(bot, 'player_attack', { id: bot.id, weapon: 3, angle: bot.angle, at: now, durationMs: 240 });
-        broadcastBotEvent(bot, 'build', { id: bId, building: { ...defSpike } });
+        io.emit('build', { id: bId, building: { ...defSpike } });
       }
     }
 
@@ -5359,7 +5359,7 @@ setInterval(() => {
           bot.baseBuildingIds.push(bId);
           rebuildBuildingGrid();
           broadcastBotEvent(bot, 'player_attack', { id: bot.id, weapon: placeType, angle: bot.angle, at: now, durationMs: 240 });
-          broadcastBotEvent(bot, 'build', { id: bId, building: { ...newBld } });
+          io.emit('build', { id: bId, building: { ...newBld } });
         }
       }
     }
@@ -6079,6 +6079,7 @@ io.on('connection', (socket) => {
     }
     socket.emit('own_respawn', { x: spawnPt.x, y: spawnPt.y });
     socket.emit('self_state', { x: spawnPt.x, y: spawnPt.y, hp: player.hp, hpSeq: 0, hpAt: player.hpAt, sc: player.score, g: player.gold, wood: player.wood, stone: player.stone, apples: player.apples, seq: 0 });
+    socket.emit('buildings_sync', { buildings: Object.fromEntries(buildings) });
     io.emit('player_respawn', { id: socket.id, state: compactFullState(player) });
     broadcastOnlineCount();
   });
@@ -6800,7 +6801,7 @@ io.on('connection', (socket) => {
     const x = Number(data.x), y = Number(data.y), angle = Number(data.angle) || 0;
     if (!Number.isInteger(type) || !SERVER_BUILD_LIMITS[type] || !Number.isFinite(x) || !Number.isFinite(y)) return null;
     if (Math.abs(x) > 6480 || Math.abs(y) > 6480) return null;
-    if (!owner || owner.hp <= 0 || Math.hypot(x - (Number(owner.x) || 0), y - (Number(owner.y) || 0)) > 260) return null;
+    if (!owner || owner.hp <= 0 || Math.hypot(x - (Number(owner.x) || 0), y - (Number(owner.y) || 0)) > 380) return null;
     const maxHp = type === 6 ? TRAP_MAX_HP : Math.max(1, Math.min(2000, Number(data.maxHp) || 100));
     return {
       id, type, x, y, angle: Number.isFinite(angle) ? angle : 0,
@@ -6811,13 +6812,15 @@ io.on('connection', (socket) => {
   }
 
   socket.on('place_building', (data = {}) => {
-    if (socketEventRateLimited(socket, 'place_building')) return;
     const bType = Number(data.type);
     if (!Number.isInteger(bType) || !SERVER_BUILD_LIMITS[bType]) return;
+    if (socketEventRateLimited(socket, 'place_building')) {
+      socket.emit('build_limit_reached', { type: bType, count: 0, limit: SERVER_BUILD_LIMITS[bType] || 25, clientId: data.id });
+      return;
+    }
     const owner = players.get(socket.id);
     if (!owner) return;
     const now = Date.now();
-    if (now - (owner.lastBuildAt || 0) < BUILD_ACTION_COOLDOWN) return;
     const limit = SERVER_BUILD_LIMITS[bType] || 25;
     let ownedCount = 0;
     for (const b of buildings.values()) {
@@ -6825,16 +6828,24 @@ io.on('connection', (socket) => {
         ownedCount++;
       }
     }
+    if (now - (owner.lastBuildAt || 0) < BUILD_ACTION_COOLDOWN) {
+      socket.emit('build_limit_reached', { type: bType, count: ownedCount, limit, clientId: data.id });
+      socket.emit('self_state', { g: owner.gold, wood: owner.wood, stone: owner.stone, apples: owner.apples });
+      return;
+    }
     if (ownedCount >= limit) {
       socket.emit('build_limit_reached', { type: bType, count: ownedCount, limit, clientId: data.id });
       socket.emit('self_state', { g: owner.gold, wood: owner.wood, stone: owner.stone, apples: owner.apples });
       return;
     }
 
-
     const id = `${socket.id}-${crypto.randomBytes(6).toString('hex')}`;
     const building = normalizeBuilding({ ...data, type: bType }, { ...owner, id: socket.id }, id);
-    if (!building) return;
+    if (!building) {
+      socket.emit('build_limit_reached', { type: bType, count: ownedCount, limit, clientId: data.id });
+      socket.emit('self_state', { g: owner.gold, wood: owner.wood, stone: owner.stone, apples: owner.apples });
+      return;
+    }
     const [wood, stone, gold] = BUILD_COSTS[bType] || [20, 5, 0];
     if ((owner.wood || 0) < wood || (owner.stone || 0) < stone || (owner.gold || 0) < gold) {
       socket.emit('build_limit_reached', { type: bType, count: ownedCount, limit, clientId: data.id });
@@ -6861,7 +6872,7 @@ io.on('connection', (socket) => {
       at: now,
       durationMs: 240
     });
-    broadcastPlayerEventNear(owner, 'build', { id, building: { ...building } });
+    io.emit('build', { id, building: { ...building } });
   });
   socket.on('build', (data = {}) => {
     // Legacy client event intentionally ignored; place_building is authoritative.
