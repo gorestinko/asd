@@ -2900,6 +2900,23 @@ function serveStatic(request, response, requestPath) {
   else if (normalized === '/favicon.ico') {
     requestPath = '/favicon-32.png';
   }
+  else if (normalized === '/ads.txt') {
+    const candidateAds = [
+      path.join(root, 'ads.txt'),
+      path.join(__dirname, 'ads.txt')
+    ];
+    for (const ca of candidateAds) {
+      if (fs.existsSync(ca)) {
+        response.writeHead(200, {
+          'Content-Type': 'text/plain; charset=utf-8',
+          'Cache-Control': 'public, max-age=86400',
+          'X-Content-Type-Options': 'nosniff'
+        });
+        fs.createReadStream(ca).pipe(response);
+        return;
+      }
+    }
+  }
 
   if (requestPath === '/.well-known/assetlinks.json' || requestPath === '/assetlinks.json') {
     const candidatePaths = [
@@ -5896,15 +5913,27 @@ io.on('connection', (socket) => {
     } else if (guestId) {
       reconnectSessions.delete(guestId);
     }
-    const requestedClan = clans.get(String(data.clanId || ''));
-    const clanMember = requestedClan?.members?.find(member => member.name === state.name);
+    const targetClanKey = String(data.clanId || '').trim();
+    const requestedClan = targetClanKey ? (clans.get(targetClanKey) || Array.from(clans.values()).find(c =>
+      c.id.toLowerCase() === targetClanKey.toLowerCase() ||
+      c.tag.toLowerCase() === targetClanKey.toLowerCase() ||
+      c.name.toLowerCase() === targetClanKey.toLowerCase()
+    )) : null;
+    let clanMember = requestedClan?.members?.find(member => member.name === state.name);
+    if (requestedClan && !clanMember && requestedClan.ownerName === state.name) {
+      clanMember = { id: socket.id, name: state.name };
+      requestedClan.members.push(clanMember);
+    }
     updatePlayerRoom(state);
     if (requestedClan && clanMember) {
       clanMember.id = socket.id;
-      requestedClan.ownerId = requestedClan.ownerName === state.name ? socket.id : requestedClan.ownerId;
+      if (requestedClan.ownerName === state.name) requestedClan.ownerId = socket.id;
       state.clanId = requestedClan.id;
       state.clanTag = requestedClan.tag;
+      socket.data.clanId = requestedClan.id;
+      socket.data.clanName = state.name;
       socket.join(`clan:${requestedClan.id}`);
+      emitClanUpdate(requestedClan);
     }
     const incomingPartyCode = String(data.partyCode || data.team || '').trim().toUpperCase();
     if (incomingPartyCode) {
@@ -5948,6 +5977,7 @@ io.on('connection', (socket) => {
       resHp: Object.fromEntries(serverResources.map(resource => [resource.idx, { hp: resource.hp, maxHp: resource.maxHp, destroyed: resource.destroyed }])),
       mobs: visibleMobs.map(publicMob),
       airdrops: [...airdrops.values()].map(publicAirdrop),
+      bountyId: currentBountyId,
       announcement: adminConfig.announcement || '',
       isHost: players.size === 1,
       loadoutCatalog: buildLoadoutCatalog(),
@@ -6999,7 +7029,7 @@ io.on('connection', (socket) => {
       persistPlayerScore(player);
       saveAccountData(true);
     }
-    leaveClan(socket, false);
+    // Note: Do not leaveClan on disconnect so clans & leadership persist across reconnections/refreshes
     players.delete(socket.id);
     for (const [code, party] of parties) {
       const hadMember = party.members.some(member => member.id === socket.id);

@@ -7271,7 +7271,7 @@ function sendQuickChat(idx) {
   // Show as floating text above player
   floatingTexts.push({ x: player.x, y: player.y - 120, text: c.emoji + ' ' + c.text, alpha: 1, life: 120, color: '#ffffff', big: true });
   // Also show in chat feed
-  addKillFeed('💬 ' + (player.name || 'Sen') + ': ' + c.text, '#aaffaa');
+  pushKillFeed('💬 ' + (player.name || 'Sen') + ': ' + c.text);
   playSound(440, 0.06, 'sine', 0.15);
 }
 
@@ -7899,7 +7899,13 @@ function _drawNameTagCached(ctx, sx, sy, name, rankId, hpRatio, isOwn, t) {
 }
 
 // Load own rank from stored auth user
-const _storedAuthUser = JSON.parse(localStorage.getItem('fb_auth_user')||'null');
+let _storedAuthUser = null;
+try {
+  const rawAuth = localStorage.getItem('fb_auth_user');
+  _storedAuthUser = rawAuth ? JSON.parse(rawAuth) : null;
+} catch (_) {
+  _storedAuthUser = null;
+}
 let _myRankId = _storedAuthUser ? (_storedAuthUser.rankId ?? 0) : 0;
 const _otherPlayers = new Map(); // id → serverPlayerState
 const _pendingRemoteAttacks = new Map();
@@ -8503,7 +8509,14 @@ let _killCamX = 0, _killCamY = 0;
 let _lastDamager = null; // tracks which enemy last damaged the player
 
 // Load equipped accessories and skin color from shop system
-const _shopAcc = JSON.parse(localStorage.getItem('fb_acc_equipped') || '{}');
+let _shopAcc = {};
+try {
+  const rawAcc = localStorage.getItem('fb_acc_equipped');
+  _shopAcc = rawAcc ? JSON.parse(rawAcc) : {};
+  if (!_shopAcc || typeof _shopAcc !== 'object') _shopAcc = {};
+} catch (_) {
+  _shopAcc = {};
+}
 const _urlWepSkin = urlParams.get('wepSkin');
 if (_urlWepSkin) {
   if (_urlWepSkin.startsWith('ba_')) _shopAcc.baltalar = _urlWepSkin;
@@ -9898,6 +9911,10 @@ function pushKillFeed(msg) {
     });
   }
 }
+function addKillFeed(msg) {
+  pushKillFeed(msg);
+}
+window.addKillFeed = pushKillFeed;
 
 // ============================================================
 // LEADERBOARD
@@ -10209,7 +10226,10 @@ function updateChests() {
       setTimeout(()=>playSound(1100, 0.2, 'triangle', 0.25), 80);
       shake(4);
       _trackMission('m5', finalGold);
-      window._updateQuestProgress('chests', 1); window._updateQuestProgress('gold', finalGold);
+      if (typeof window._updateQuestProgress === 'function') {
+        window._updateQuestProgress('chests', 1);
+        window._updateQuestProgress('gold', finalGold);
+      }
       chests[i]=chests[chests.length-1]; chests.pop();
     } else if (c.life <= 0) {
       chests[i]=chests[chests.length-1]; chests.pop();
@@ -11560,7 +11580,9 @@ function recordKill(){
   // Mission tracking: m1 (5 kills), m4 (10 kills)
   _trackMission('m1', 1);
   _trackMission('m4', 1);
-  window._updateQuestProgress('kills', 1);
+  if (typeof window._updateQuestProgress === 'function') {
+    window._updateQuestProgress('kills', 1);
+  }
 
 }
 
@@ -12046,14 +12068,18 @@ function die() {
   // Mark pending achievements for popup in lobby
   (function(){
     const ACHS=[{id:'kills_5',type:'kills',req:5},{id:'kills_10',type:'kills',req:10},{id:'kills_50',type:'kills',req:50},{id:'kills_100',type:'kills',req:100},{id:'age_4',type:'age',req:4},{id:'age_5',type:'age',req:5},{id:'age_6',type:'age',req:6},{id:'age_7',type:'age',req:7},{id:'age_8',type:'age',req:8}];
-    const done=JSON.parse(localStorage.getItem('fb_unlocked_ach')||'[]');
+    let done = [];
+    try { done = JSON.parse(localStorage.getItem('fb_unlocked_ach') || '[]'); } catch (_) { done = []; }
+    if (!Array.isArray(done)) done = [];
     const newMax=Math.max(parseInt(localStorage.getItem('fb_max_age')||'1',10),_curAge);
     const newKills=_newTotalKills;
     const nowDone=ACHS.filter(a=>(a.type==='kills'?newKills:newMax)>=a.req).map(a=>a.id);
     const fresh=nowDone.filter(id=>!done.includes(id));
     if(fresh.length){
       localStorage.setItem('fb_unlocked_ach',JSON.stringify(nowDone));
-      const pend=JSON.parse(localStorage.getItem('fb_pending_ach')||'[]');
+      let pend = [];
+      try { pend = JSON.parse(localStorage.getItem('fb_pending_ach') || '[]'); } catch (_) { pend = []; }
+      if (!Array.isArray(pend)) pend = [];
       localStorage.setItem('fb_pending_ach',JSON.stringify([...pend,...fresh]));
     }
   })();
@@ -12195,7 +12221,9 @@ function die() {
   {
     const _minsSurvived = Math.floor(globalTime / 60);
     if (_minsSurvived > _questTrackedTimeMinutes) {
-      window._updateQuestProgress('time', _minsSurvived - _questTrackedTimeMinutes);
+      if (typeof window._updateQuestProgress === 'function') {
+        window._updateQuestProgress('time', _minsSurvived - _questTrackedTimeMinutes);
+      }
       _questTrackedTimeMinutes = _minsSurvived;
     }
   }
@@ -21757,7 +21785,7 @@ function initMultiplayer() {
       op._chatExpiry = Date.now() + 4500;
     }
     floatingTexts.push({ x: chatX, y: chatY - 120, text: chat.emoji + ' ' + chat.text, alpha: 1, life: 120, color: '#ffffff', big: true });
-    addKillFeed('💬 ' + (name || op?.name || 'Oyuncu') + ': ' + chat.text, '#aaffaa');
+    pushKillFeed('💬 ' + (name || op?.name || 'Oyuncu') + ': ' + chat.text);
     playSound(440, 0.06, 'sine', 0.15);
   });
 
@@ -23055,14 +23083,14 @@ function checkBuildingDamage() {
       var _eDead = false;
       for (var _cbi = 0; _cbi < _cbdNear.length; _cbi++) {
         var b = _cbdNear[_cbi];
-        if (b.hp <= 0 || (b.type !== 3 && b.type !== 4)) continue;
-        var effectR = b.type === 4 ? 72 : 60;
+        if (b.hp <= 0 || b.type !== 3) continue;
+        var effectR = 60;
         var _totR = effectR + (e.radius || 28);
         var _cbx = e.x - b.x, _cby = e.y - b.y;
         if (Math.abs(_cbx) > _totR || Math.abs(_cby) > _totR) continue;
         if (_cbx * _cbx + _cby * _cby > _totR * _totR) continue;
         var _bTierDmg = _getTier(b);
-        var dmgPerTick = Math.round((b.type === 4 ? 22 : 45) * (TIER_DMG_MULS[_bTierDmg] || 1));
+        var dmgPerTick = Math.round(45 * (TIER_DMG_MULS[_bTierDmg] || 1));
         var _bId = b._netId || (b._bLid = b._bLid || ++_eLidCounter);
         var _eLid = e._netId !== undefined ? e._netId : (e._lid = e._lid || ++_eLidCounter);
         var cdKey = 'e' + _eLid + '_b' + _bId;
@@ -23694,7 +23722,7 @@ var _lbIv = null;
 var _TIPS = [
   '🌲 Ağaçları vurarak odun topla ve bina inşa et!',
   '⚔️ Kill serisi yaparak bonus hasar kazan!',
-  '🏹 Fok silahı en hızlı saldırır, kılıç en güçlüdür.',
+  '🏹 Yay silahı en hızlı saldırır, kılıç en güçlüdür.',
   '🛡️ Duvar inşa ederek düşman oklarından korun!',
   '💰 Sandıkları aç — büyük altın ödülleri var!',
   '🔥 Killstreak × 2 ile çok daha fazla hasar verirsin.',

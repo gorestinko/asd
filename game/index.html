@@ -829,31 +829,37 @@
             height: 24px !important;
         }
 
-        /* ── SHOP & COSMETICS MODALLARI: GLOBAL SIZING ── */
+        /* ── SHOP & COSMETICS MODALLARI: GENİŞ, FERAH & KONFORLU BOYUTLANDIRMA ── */
         #shopModal,
         #cosmeticsModal {
-            max-width: min(96vw, 750px) !important;
-            max-height: min(94vh, 94dvh, 490px) !important;
+            width: min(96vw, 860px) !important;
+            max-width: min(96vw, 860px) !important;
+            height: min(92vh, 92dvh, 580px) !important;
+            max-height: min(92vh, 92dvh, 580px) !important;
+            padding: 10px 14px !important;
         }
 
         #shopModal .mt-2.flex,
-        #cosmeticsModal .mt-2.flex {
-            margin-top: 3px !important;
-            gap: 6px !important;
+        #cosmeticsModal .mt-2.flex,
+        #shopModal .mt-1.flex,
+        #cosmeticsModal .mt-1.flex {
+            margin-top: 8px !important;
+            gap: 12px !important;
             display: flex !important;
             flex-direction: row !important;
             flex: 1 1 auto !important;
             min-height: 0 !important;
         }
 
-        /* Sol Önizleme Paneli */
+        /* Sol Önizleme Paneli (Geniş, Ferah Yıldız Arka Planı) */
         #shopModal .preview-star-pattern,
         #cosmeticsModal .preview-star-pattern {
-            width: 175px !important;
-            min-width: 175px !important;
-            max-width: 175px !important;
-            padding: 6px 8px !important;
-            border-width: 2px !important;
+            width: 230px !important;
+            min-width: 230px !important;
+            max-width: 230px !important;
+            padding: 12px 14px !important;
+            border-width: 3px !important;
+            border-radius: 16px !important;
             flex-shrink: 0 !important;
             display: flex !important;
             flex-direction: column !important;
@@ -863,10 +869,14 @@
         }
 
         #shopModal .preview-star-pattern .my-2,
-        #cosmeticsModal .preview-star-pattern .my-2 {
-            margin: 2px 0 !important;
-            width: 96px !important;
-            height: 96px !important;
+        #cosmeticsModal .preview-star-pattern .my-2,
+        #shopModal .preview-star-pattern .my-1,
+        #cosmeticsModal .preview-star-pattern .my-1,
+        #cosmeticsModal .my-1.w-24.h-24,
+        #shopModal .my-2.w-44.h-44 {
+            margin: 6px 0 !important;
+            width: 140px !important;
+            height: 140px !important;
             display: flex !important;
             align-items: center !important;
             justify-content: center !important;
@@ -874,38 +884,42 @@
 
         #shop-preview-canvas,
         #cosmetic-preview-canvas {
-            width: 90px !important;
-            height: 90px !important;
+            width: 125px !important;
+            height: 125px !important;
             max-width: 100% !important;
             max-height: 100% !important;
         }
 
         #shop-preview-name,
         #cosmetic-preview-name {
-            font-size: 0.95rem !important;
-            line-height: 1.1 !important;
+            font-size: 1.25rem !important;
+            line-height: 1.2 !important;
+            font-weight: 800 !important;
         }
 
         #shop-preview-status,
         #cosmetic-preview-status {
-            font-size: 10px !important;
-            margin-bottom: 2px !important;
+            font-size: 12px !important;
+            margin-bottom: 4px !important;
         }
 
         #shop-preview-btn,
         #cosmetic-preview-btn {
-            padding: 4px 8px !important;
-            font-size: 11px !important;
-            height: 28px !important;
-            min-height: 28px !important;
+            padding: 7px 16px !important;
+            font-size: 13px !important;
+            height: 38px !important;
+            min-height: 38px !important;
+            border-radius: 10px !important;
+            font-weight: bold !important;
         }
 
-        /* Sağ Katalog Paneli */
+        /* Sağ Katalog Paneli (Geniş 3x3 Izgara) */
         #shopModal .panel-inset.flex-1,
         #cosmeticsModal .panel-inset.flex-1 {
             min-height: 0 !important;
-            padding: 5px 7px !important;
-            border-width: 2px !important;
+            padding: 10px 12px !important;
+            border-width: 3px !important;
+            border-radius: 16px !important;
             display: flex !important;
             flex-direction: column !important;
             justify-content: space-between !important;
@@ -914,14 +928,16 @@
             box-sizing: border-box !important;
         }
 
-        /* 3x3 Izgara & Kartlar (.taming-card) */
+        /* 3x3 Izgara & Konforlu Kartlar (.taming-card) */
         #shop-all-grid,
         #cosmetic-owned-grid {
             display: grid !important;
             grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
-            gap: 4px !important;
+            gap: 10px !important;
             align-content: start !important;
             flex: 1 1 auto !important;
+            overflow-y: auto !important;
+            padding: 2px !important;
         }
 
         .taming-card,
@@ -929,23 +945,23 @@
         #cosmetic-owned-grid .taming-card,
         #shop-all-grid > div,
         #cosmetic-owned-grid > div {
-            padding: 4px 5px !important;
-            border-radius: 9px !important;
-            border-width: 2px !important;
-            min-height: 0 !important;
-            gap: 1px !important;
+            padding: 8px 10px !important;
+            border-radius: 14px !important;
+            border-width: 3px !important;
+            min-height: 108px !important;
+            gap: 4px !important;
             box-sizing: border-box !important;
         }
 
         .taming-card .w-14.h-14,
         #shop-all-grid .w-14.h-14,
         #cosmetic-owned-grid .w-14.h-14 {
-            width: 36px !important;
-            height: 36px !important;
-            min-width: 36px !important;
-            min-height: 36px !important;
-            margin-top: 1px !important;
-            margin-bottom: 1px !important;
+            width: 56px !important;
+            height: 56px !important;
+            min-width: 56px !important;
+            min-height: 56px !important;
+            margin-top: 2px !important;
+            margin-bottom: 2px !important;
         }
 
         .taming-card canvas,
@@ -954,8 +970,8 @@
         #shop-all-grid img,
         #cosmetic-owned-grid canvas,
         #cosmetic-owned-grid img {
-            width: 34px !important;
-            height: 34px !important;
+            width: 52px !important;
+            height: 52px !important;
             max-width: 100% !important;
             max-height: 100% !important;
             object-fit: contain !important;
@@ -964,48 +980,65 @@
         .taming-card span,
         #shop-all-grid span,
         #cosmetic-owned-grid span {
-            font-size: 9.5px !important;
-            line-height: 1.15 !important;
+            font-size: 12.5px !important;
+            line-height: 1.2 !important;
+            font-weight: 700 !important;
             margin: 0 !important;
         }
 
         .taming-card span.uppercase,
         #shop-all-grid span.uppercase,
         #cosmetic-owned-grid span.uppercase {
-            font-size: 7.5px !important;
+            font-size: 9.5px !important;
             line-height: 1 !important;
         }
 
         .taming-card .mt-1,
         #shop-all-grid .mt-1,
         #cosmetic-owned-grid .mt-1 {
-            margin-top: 1px !important;
+            margin-top: 2px !important;
         }
 
         .taming-card span.text-amber-300,
         #shop-all-grid span.text-amber-300,
         #cosmetic-owned-grid span.text-amber-300 {
-            font-size: 8.5px !important;
+            font-size: 11.5px !important;
             line-height: 1 !important;
+            font-weight: bold !important;
         }
 
         /* Sayfalama Altlığı */
         #shopModal .border-t-2,
         #cosmeticsModal .border-t-2 {
-            margin-top: 3px !important;
-            padding-top: 2px !important;
-            font-size: 10px !important;
+            margin-top: 8px !important;
+            padding-top: 6px !important;
+            font-size: 13px !important;
             flex-shrink: 0 !important;
         }
 
         #shop-prev-btn, #shop-next-btn,
         #cosmetics-prev-btn, #cosmetics-next-btn {
-            width: 24px !important;
-            height: 22px !important;
-            min-width: 24px !important;
-            min-height: 22px !important;
-            font-size: 10px !important;
+            width: 36px !important;
+            height: 32px !important;
+            min-width: 36px !important;
+            min-height: 32px !important;
+            font-size: 13px !important;
             padding: 0 !important;
+            border-radius: 8px !important;
+        }
+
+        #cosmetics-page-info,
+        #shop-page-info {
+            font-size: 13px !important;
+            font-weight: bold !important;
+        }
+
+        #cosmeticsModal .taming-tab,
+        #shopModal .taming-tab {
+            padding: 6px 14px !important;
+            font-size: 13px !important;
+            border-radius: 10px !important;
+            font-weight: bold !important;
         }
 
         /* ── DİĞER MODALLAR: KOMPAKT VE TAŞMAYAN İÇ PANEL BOYUTLARI ── */
@@ -1039,23 +1072,25 @@
         /* ── DİKEY / PORTRAIT EKRAN DÜZENİ ── */
         @media (orientation: portrait), (max-width: 600px) {
             .modal-content {
-                width: min(96vw, 440px) !important;
-                max-width: min(96vw, 440px) !important;
+                width: min(96vw, 460px) !important;
+                max-width: min(96vw, 460px) !important;
                 max-height: calc(100dvh - 10px) !important;
-                padding: 6px 8px !important;
+                padding: 8px 10px !important;
             }
 
             #shopModal,
             #cosmeticsModal {
-                width: min(96vw, 440px) !important;
-                max-width: min(96vw, 440px) !important;
+                width: min(96vw, 460px) !important;
+                max-width: min(96vw, 460px) !important;
                 max-height: calc(100dvh - 10px) !important;
             }
 
             #shopModal .mt-2.flex,
-            #cosmeticsModal .mt-2.flex {
+            #cosmeticsModal .mt-2.flex,
+            #shopModal .mt-1.flex,
+            #cosmeticsModal .mt-1.flex {
                 flex-direction: column !important;
-                gap: 4px !important;
+                gap: 6px !important;
             }
 
             /* Dikey ekranda sol panel üstte kompakt yatay şerit olur */
@@ -1064,8 +1099,8 @@
                 width: 100% !important;
                 min-width: 100% !important;
                 max-width: 100% !important;
-                height: 56px !important;
-                padding: 3px 8px !important;
+                height: 64px !important;
+                padding: 4px 10px !important;
                 flex-direction: row !important;
                 align-items: center !important;
                 justify-content: space-between !important;
@@ -1079,17 +1114,21 @@
             }
 
             #shopModal .preview-star-pattern .my-2,
-            #cosmeticsModal .preview-star-pattern .my-2 {
+            #cosmeticsModal .preview-star-pattern .my-2,
+            #shopModal .preview-star-pattern .my-1,
+            #cosmeticsModal .preview-star-pattern .my-1,
+            #cosmeticsModal .my-1.w-24.h-24,
+            #shopModal .my-2.w-44.h-44 {
                 margin: 0 8px !important;
-                width: 46px !important;
-                height: 46px !important;
+                width: 52px !important;
+                height: 52px !important;
                 flex-shrink: 0 !important;
             }
 
             #shop-preview-canvas,
             #cosmetic-preview-canvas {
-                width: 44px !important;
-                height: 44px !important;
+                width: 48px !important;
+                height: 48px !important;
             }
 
             #shopModal .preview-star-pattern > div:last-child,
@@ -1100,30 +1139,32 @@
 
             #shop-preview-btn,
             #cosmetic-preview-btn {
-                width: 90px !important;
-                height: 26px !important;
-                font-size: 10px !important;
+                width: 96px !important;
+                height: 28px !important;
+                font-size: 11px !important;
                 padding: 2px 6px !important;
             }
 
             #shop-all-grid,
             #cosmetic-owned-grid {
-                gap: 3px !important;
+                gap: 5px !important;
             }
 
             .taming-card,
             #shop-all-grid .taming-card,
             #cosmetic-owned-grid .taming-card {
-                padding: 3px 2px !important;
+                padding: 5px 4px !important;
+                min-height: 84px !important;
+                border-radius: 10px !important;
             }
 
             .taming-card .w-14.h-14,
             #shop-all-grid .w-14.h-14,
             #cosmetic-owned-grid .w-14.h-14 {
-                width: 30px !important;
-                height: 30px !important;
-                min-width: 30px !important;
-                min-height: 30px !important;
+                width: 42px !important;
+                height: 42px !important;
+                min-width: 42px !important;
+                min-height: 42px !important;
             }
 
             .taming-card canvas,
@@ -1132,8 +1173,14 @@
             #shop-all-grid img,
             #cosmetic-owned-grid canvas,
             #cosmetic-owned-grid img {
-                width: 28px !important;
-                height: 28px !important;
+                width: 38px !important;
+                height: 38px !important;
+            }
+
+            .taming-card span,
+            #shop-all-grid span,
+            #cosmetic-owned-grid span {
+                font-size: 11px !important;
             }
         }
 
@@ -2964,7 +3011,9 @@
                 height: 28px !important;
                 border-radius: 8px !important;
             }
-          /* ══════════════════════════════════════════════════════════════
+        }
+
+        /* ══════════════════════════════════════════════════════════════
            YATAY MOBİL (LANDSCAPE) - 3-KOLONLU ULTRA-PREMİUM KOKPİT DÜZENİ
            Sol: Etkinlikler | Orta: Oyun & Karakter | Sağ: Görevler & Sosyal
            ══════════════════════════════════════════════════════════════ */
@@ -3156,7 +3205,22 @@
                 font-size: 1.7rem !important;
             }
             #action-buttons-grid {
-                display: none !important;
+                display: grid !important;
+                grid-template-columns: 1fr 1fr !important;
+                gap: 6px !important;
+                margin-top: 3px !important;
+                margin-bottom: 0 !important;
+                width: 100% !important;
+            }
+            #action-buttons-grid button {
+                height: 34px !important;
+                min-height: 34px !important;
+                font-size: 11px !important;
+                padding: 0 6px !important;
+                border-radius: 8px !important;
+            }
+            #action-buttons-grid i {
+                font-size: 13px !important;
             }
 
             /* ── SAĞ KOLON: GÖREVLER, ÖDÜL, SIRALAMA & SOSYAL ── */
@@ -3270,6 +3334,11 @@
             #header-right-panel {
                 display: flex !important;
             }
+            #main-menu > div.w-full.mt-1.mb-3,
+            #main-menu > div.w-full.mt-3.mb-3,
+            #main-menu > div.flex.flex-col.items-center.gap-2\.5 {
+                display: none !important;
+            }
             #mobile-bottom-dock {
                 display: none !important;
             }
@@ -3379,10 +3448,11 @@
 
         #modalOverlay > #shopModal,
         #modalOverlay > #cosmeticsModal {
-            width: min(96vw, 920px) !important;
-            max-width: 96vw !important;
-            min-height: min(72dvh, 680px) !important;
-            max-height: calc(100dvh - 16px) !important;
+            width: min(96vw, 860px) !important;
+            max-width: min(96vw, 860px) !important;
+            height: min(92vh, 92dvh, 580px) !important;
+            max-height: min(92vh, 92dvh, 580px) !important;
+            overflow: hidden !important;
         }
 
         #modalOverlay > #profileModal,
@@ -3394,9 +3464,50 @@
             max-width: 94vw !important;
         }
 
-        /* Important tabs and live events use the whole centered modal; no hidden half-panels. */
-        #modalOverlay > #friendInviteModal,
+        /* Creator Event & Friend Invite Modalleri: Esnek Sütun & Görünür Sekmeler */
         #modalOverlay > #creatorEventModal,
+        #modalOverlay > #friendInviteModal {
+            display: flex !important;
+            flex-direction: column !important;
+            max-height: min(92vh, 92dvh, 640px) !important;
+            overflow: hidden !important;
+        }
+
+        .creator-tabs-bar {
+            display: flex !important;
+            flex-shrink: 0 !important;
+            min-height: 48px !important;
+            height: 48px !important;
+            align-items: center !important;
+            gap: 6px !important;
+            padding: 4px 8px !important;
+            border-bottom: 2px solid #3c1e08 !important;
+            background: rgba(26, 13, 6, 0.75) !important;
+            overflow-x: auto !important;
+            z-index: 10 !important;
+        }
+        .creator-tabs-bar .invite-tab-btn {
+            flex-shrink: 0 !important;
+            min-height: 38px !important;
+            height: 38px !important;
+            padding: 0 14px !important;
+            font-size: 12px !important;
+            display: inline-flex !important;
+            align-items: center !important;
+            gap: 6px !important;
+            white-space: nowrap !important;
+            border-radius: 10px !important;
+        }
+
+        #modalOverlay > #creatorEventModal .panel-inset.overflow-y-auto,
+        #modalOverlay > #friendInviteModal .panel-inset.overflow-y-auto {
+            flex: 1 1 auto !important;
+            min-height: 0 !important;
+            max-height: none !important;
+            overflow-y: auto !important;
+        }
+
+        /* Other scrolling panels */
         #modalOverlay > #challengesModal,
         #modalOverlay > #dailyRewardModal,
         #modalOverlay > #levelRewardsModal,
@@ -3407,8 +3518,6 @@
             overflow-x: hidden !important;
         }
 
-        #modalOverlay > #friendInviteModal .panel-inset,
-        #modalOverlay > #creatorEventModal .panel-inset,
         #modalOverlay > #challengesModal .panel-inset,
         #modalOverlay > #dailyRewardModal .panel-inset,
         #modalOverlay > #levelRewardsModal .panel-inset,
@@ -3419,7 +3528,7 @@
 
         #modalOverlay > #friendInviteModal .modal-header-bar,
         #modalOverlay > #creatorEventModal .modal-header-bar {
-            flex-shrink: 0;
+            flex-shrink: 0 !important;
         }
 
         @media (max-width: 640px) {
@@ -3561,24 +3670,18 @@
                 </button>
             </div>
 
-            <!-- Sosyal & Yardımcı Butonlar + SHOP & COSMETICS -->
-            <div class="grid grid-cols-2 gap-1 w-36 sm:w-40 mt-0.5">
-                <button onclick="openTikTok()" class="btn-3d btn-action p-1 flex justify-center" title="TikTok Profilim">
-                    <i class="fa-brands fa-tiktok text-[#00f2ea] text-lg drop-shadow-md"></i>
+            <!-- Sosyal & Yardımcı Butonlar -->
+            <div class="grid grid-cols-2 gap-1.5 w-36 sm:w-40 mt-1">
+                <button onclick="openTikTok()" class="btn-3d btn-action p-1.5 flex items-center justify-center gap-1" title="TikTok Profilim">
+                    <i class="fa-brands fa-tiktok text-[#00f2ea] text-base drop-shadow-md"></i>
+                    <span class="text-[10px] font-io text-white">TikTok</span>
                 </button>
-                <button onclick="openModal('partyModal'); playSfx('click')" class="btn-3d btn-action p-1 flex justify-center" title="Parti Kur / Katıl">
-                    <i class="fa-solid fa-users text-[#79D138] text-lg drop-shadow-md"></i>
+                <button onclick="openModal('partyModal'); playSfx('click')" class="btn-3d btn-action p-1.5 flex items-center justify-center gap-1" title="Parti Kur / Katıl">
+                    <i class="fa-solid fa-users text-[#79D138] text-base drop-shadow-md"></i>
+                    <span class="text-[10px] font-io text-white">Parti</span>
                 </button>
-                <button onclick="openModal('leadersModal'); playSfx('click')" class="btn-3d btn-action col-span-2 py-0.5 text-amber-300 font-io text-[10px] tracking-wide font-bold">
-                    LEADERBOARD
-                </button>
-                <button onclick="openShopModal(); playSfx('click')" class="btn-3d btn-yellow col-span-2 py-1.5 flex items-center justify-center gap-1.5 font-io text-xs tracking-wider stroke-text-dark rounded-xl shadow-lg" title="Shop (Market)">
-                    <i class="fa-solid fa-store text-xs text-[var(--border-heavy)]"></i>
-                    <span class="text-[var(--border-heavy)]">SHOP</span>
-                </button>
-                <button onclick="openCosmeticsModal(); playSfx('click')" class="btn-3d btn-action col-span-2 py-1.5 flex items-center justify-center gap-1.5 font-io text-xs tracking-wider text-white stroke-text rounded-xl shadow-lg" title="Cosmetics (Kozmetik)">
-                    <i class="fa-solid fa-box-open text-xs text-[#B388FF]"></i>
-                    <span class="text-white">COSMETICS</span>
+                <button onclick="openModal('leadersModal'); playSfx('click')" class="btn-3d btn-action col-span-2 py-1.5 flex items-center justify-center gap-1.5 text-amber-300 font-io text-xs tracking-wide font-bold shadow-md">
+                    <i class="fa-solid fa-trophy text-amber-300 text-xs"></i> LEADERBOARD
                 </button>
             </div>
         </div>
@@ -4787,7 +4890,7 @@
             </div>
 
             <!-- Sekme Butonları -->
-            <div class="flex items-center gap-1 px-1 border-b-2 border-[#3c1e08] overflow-x-auto custom-scrollbar">
+            <div class="creator-tabs-bar flex items-center gap-1 px-1 border-b-2 border-[#3c1e08] overflow-x-auto custom-scrollbar">
                 <button id="creator-tab-rewards-btn" onclick="setCreatorModalTab('rewards'); playSfx('click')" class="invite-tab-btn active flex items-center gap-1.5 whitespace-nowrap">
                     <i class="fa-solid fa-trophy text-yellow-400"></i> ÖDÜL KADEMELERİ
                 </button>
@@ -5101,7 +5204,13 @@
            2. DURUM YÖNETİMİ & RESİM ÖNBELLEĞİ
         ════════════════════════════════════════════════════════════════ */
         let _authToken = localStorage.getItem('fb_auth_token') || null;
-        let _authUser  = JSON.parse(localStorage.getItem('fb_auth_user') || 'null');
+        let _authUser  = null;
+        try {
+            const rawUser = localStorage.getItem('fb_auth_user');
+            _authUser = rawUser ? JSON.parse(rawUser) : null;
+        } catch (_) {
+            _authUser = null;
+        }
         let _currentUser = _authUser;
         let _currentSkin = localStorage.getItem('fb_skin') || 'wolf';
         let _equippedWeapon = localStorage.getItem('fb_weapon_skin') || 'ki_tier_0';
@@ -5120,6 +5229,7 @@
 
         const _IMAGE_CACHE = new Map();
         function getLoadedImage(src) {
+            if (!src || typeof src !== 'string') return null;
             if (_IMAGE_CACHE.has(src)) return _IMAGE_CACHE.get(src);
             const img = new Image();
             img.src = src;
@@ -5179,7 +5289,7 @@
             });
         }
 
-        REAL_SKINS.forEach(s => getLoadedImage(s.img));
+        REAL_SKINS.forEach(s => { if (s && s.img) getLoadedImage(s.img); });
         REAL_SWORDS.forEach(s => getLoadedImage(s.img));
         REAL_AXES.forEach(s => getLoadedImage(s.img));
 
@@ -5308,7 +5418,9 @@
         }
 
         function getSkinAsset(skinId) {
-            return getSkinObject(skinId)?.img || `players/${skinId}.png`;
+            const skinObj = getSkinObject(skinId);
+            if (skinObj?.generated || (typeof GENERATED_SKIN_STYLES !== 'undefined' && GENERATED_SKIN_STYLES[skinId])) return null;
+            return skinObj?.img || (skinId && !String(skinId).startsWith('skin_') ? `players/${skinId}.png` : null);
         }
 
         function getWeaponObject(wepId) {
@@ -7692,12 +7804,27 @@
 
         function createParty() {
             const code = Math.random().toString(36).slice(2, 6).toUpperCase();
-            triggerToast(`Parti Oluşturuldu! Kod: ${code}`, 'fa-users');
+            try { sessionStorage.setItem('fb_party_code', code); } catch (_) {}
+            const input = document.getElementById('party-code-input');
+            if (input) input.value = code;
+            const banner = document.getElementById('party-invite-banner');
+            const codeSpan = document.getElementById('party-banner-code');
+            if (codeSpan) codeSpan.textContent = code;
+            if (banner) banner.classList.remove('hidden');
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(code).catch(() => {});
+            }
+            triggerToast(`Parti Oluşturuldu! Kod: ${code} (Kopyalandı)`, 'fa-users');
             playSfx('buy');
         }
         function joinParty() {
-            const c = document.getElementById('party-code-input').value.trim().toUpperCase();
+            const c = (document.getElementById('party-code-input')?.value || '').trim().toUpperCase();
             if (c.length < 3) { triggerToast('Geçersiz parti kodu', 'fa-triangle-exclamation'); return; }
+            try { sessionStorage.setItem('fb_party_code', c); } catch (_) {}
+            const banner = document.getElementById('party-invite-banner');
+            const codeSpan = document.getElementById('party-banner-code');
+            if (codeSpan) codeSpan.textContent = c;
+            if (banner) banner.classList.remove('hidden');
             triggerToast(`Partiye Katılınıyor: ${c}`, 'fa-check');
             playSfx('click');
         }
@@ -9633,7 +9760,8 @@
 
         function drawExactInGamePlayer(ctx, cx, cy, skinId, weaponId, t, scale = 0.7, helmetId = null, setId = null) {
             if (!ctx) return;
-            const skinImg = getLoadedImage(getSkinAsset(skinId));
+            const skinAsset = (typeof GENERATED_SKIN_STYLES !== 'undefined' && GENERATED_SKIN_STYLES[skinId]) ? null : getSkinAsset(skinId);
+            const skinImg = skinAsset ? getLoadedImage(skinAsset) : null;
             const armCol = SKIN_ARM_COLORS[skinId] || '#c4966a';
             
             const breathe = Math.sin(t * 0.06) * 1.8;
